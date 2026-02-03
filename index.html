@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Study Buddy</title>
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/nav.css" />
+
+</head>
+
+<body class="sb">
+  <header class="sb-header">
+    <nav class="sb-topnav" aria-label="Primary">
+      <a href="index.html" class="sb-logo">Study Buddy</a>
+
+      <div class="sb-rank-wrap" aria-label="Rank">
+        <img src="assets/RankLogo.png" alt="Rank badge" class="sb-rank-badge" />
+      </div>
+
+      <div class="sb-nav-links">
+        <a class="sb-nav-btn" href="leaderboard.html">Leader board</a>
+        <a class="sb-nav-btn" href="friends.html">Friends</a>
+        <a class="sb-nav-btn" href="#settings-panel">Settings</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="sb-main">
+    <section class="sb-center" aria-label="Study timer">
+      <p class="sb-username">Username</p>
+
+      <img
+        src="assets/DuckCrown.png"
+        alt="Study Buddy mascot"
+        class="sb-mascot"
+      />
+
+      <div class="sb-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="55" aria-label="Rank progress">
+        <div class="sb-progress-fill" style="width: 55%"></div>
+      </div>
+
+      <div class="sb-timer-card" aria-label="Timer card">
+        <div class="sb-time" aria-live="polite">14:03</div>
+
+        <button class="sb-start-btn" type="button" aria-label="Start timer">
+          <span class="sb-play" aria-hidden="true"></span>
+          START
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Settings panel lives outside main -->
+  <section id="settings-panel" class="sb-settings" aria-label="Settings">
+    <div class="sb-settings-header">
+      <a href="#" class="sb-back" aria-label="Close settings">←</a>
+      <h2 class="sb-settings-title">Settings</h2>
+      <div></div>
+    </div>
+
+    <div class="sb-settings-content">
+      <button class="sb-settings-item" type="button">Profile</button>
+      <a class="sb-settings-item" href="login.html">Log out</a>
+    </div>
+  </section>
+</body>
+</html>
+
+

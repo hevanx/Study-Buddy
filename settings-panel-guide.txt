@@ -1,0 +1,44 @@
+SETTINGS PANEL - REQUIRED HTML FOR EACH PAGE
+=============================================
+
+There are 2 parts needed on EVERY page for the settings panel to work:
+
+
+PART 1: THE SETTINGS BUTTON IN NAV (must use #settings-panel, NOT /#settings-panel)
+------------------------------------------------------------------------------------
+
+<a class="sb-nav-btn" href="#settings-panel">Settings</a>
+
+NOTE: Using "/#settings-panel" will redirect to index.html - this is WRONG
+      Using "#settings-panel" stays on the current page - this is CORRECT
+
+
+PART 2: THE SETTINGS PANEL HTML (add before closing </body> tag)
+-----------------------------------------------------------------
+
+  <!-- Settings panel -->
+  <section id="settings-panel" class="sb-settings" aria-label="Settings">
+    <div class="sb-settings-header">
+      <a href="#" class="sb-back" aria-label="Close settings">←</a>
+      <h2 class="sb-settings-title">Settings</h2>
+      <div></div>
+    </div>
+
+    <div class="sb-settings-content">
+      <button class="sb-settings-item" type="button">Profile</button>
+      <a class="sb-settings-item" href="login.html">Log out</a>
+    </div>
+  </section>
+
+
+ALSO REQUIRED: Link to nav.css in the <head>
+---------------------------------------------
+
+<link rel="stylesheet" href="styles/nav.css">
+
+
+HOW IT WORKS:
+- Clicking "Settings" adds #settings-panel to the URL
+- CSS :target selector detects this and slides the panel in
+- Clicking the back arrow (href="#") removes the hash and closes the panel
+- Since it's all hash-based, you stay on the current page
