@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Friends - Study Buddy</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/nav.css">
+</head>
+<body class="sb">
+  <header class="sb-header">
+    <nav class="sb-topnav" aria-label="Primary">
+      <a href="index.html" class="sb-logo">Study Buddy</a>
+
+      <div class="sb-rank-wrap" aria-label="Rank">
+        <img src="assets/icon-rank.png" alt="Rank badge" class="sb-rank-badge" />
+      </div>
+
+      <div class="sb-nav-links">
+        <a class="sb-nav-btn" href="leaderboard.html">Leader board</a>
+        <a class="sb-nav-btn sb-nav-btn--active" href="friends.html">Friends</a>
+        <a class="sb-nav-btn" href="#settings-panel">Settings</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <section>
+        <h1>Friends</h1>
+        <p>Connect with fellow students and track progress together.</p>
+      </section>
+
+      <section class="mt-20">
+        <div class="card">
+          <h2>Your Friends</h2>
+          <ul style="list-style: none; padding: 0;">
+            <li style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee;">
+              <img src="assets/avatar-1.png" alt="Alex's avatar" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px;">
+              <span>Alex - 12 hours this week</span>
+            </li>
+            <li style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee;">
+              <img src="assets/avatar-2.png" alt="Jordan's avatar" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px;">
+              <span>Jordan - 8 hours this week</span>
+            </li>
+            <li style="display: flex; align-items: center; padding: 10px 0;">
+              <img src="assets/avatar-3.png" alt="Sam's avatar" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 15px;">
+              <span>Sam - 15 hours this week</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="mt-20">
+        <div class="card">
+          <h2>Add Friend</h2>
+          <form action="#" method="post">
+            <div class="form-group">
+              <label for="friend-email">Friend's Email</label>
+              <input type="email" id="friend-email" name="friend-email" placeholder="friend@example.com">
+            </div>
+            <button type="submit" class="btn btn-primary">Send Invite</button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Study Buddy. All rights reserved.</p>
+  </footer>
+
+  <!-- Settings panel -->
+  <section id="settings-panel" class="sb-settings" aria-label="Settings">
+    <div class="sb-settings-header">
+      <a href="#" class="sb-back" aria-label="Close settings">←</a>
+      <h2 class="sb-settings-title">Settings</h2>
+      <div></div>
+    </div>
+
+    <div class="sb-settings-content">
+      <button class="sb-settings-item" type="button">Profile</button>
+      <a class="sb-settings-item" href="login.html">Log out</a>
+    </div>
+  </section>
+</body>
+</html>
