@@ -1,0 +1,51 @@
+.sb-main {
+  height: calc(100svh - 86px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(10px, 2vh, 20px) 16px;
+  overflow: hidden;
+}
+
+.profile-card {
+  width: 500px;
+  height: 600px;
+  background: #fef3cf;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  border: 2px solid #3b2a20;
+}
+
+.profile-avatar-wrap {
+  width: 200px;
+  height: 200px;
+  background: #ffffff;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-pic {
+  width: 160px;
+  height: 160px;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.profile-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #3b2a20;
+}
+
+.profile-rank {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}

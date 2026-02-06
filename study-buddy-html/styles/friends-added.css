@@ -1,0 +1,8 @@
+.sb-main {
+  height: calc(100svh - 86px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(10px, 2vh, 20px) 16px;
+  overflow: hidden;
+}

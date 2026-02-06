@@ -7,6 +7,7 @@
   overflow: hidden;
 }
 
+/* Same friends container styles */
 .friends-container {
   width: 1150px;
   height: 650px;
@@ -17,7 +18,6 @@
   flex-direction: column;
 }
 
-/* Top bar */
 .top {
   display: flex;
   align-items: center;
@@ -37,23 +37,27 @@
 }
 
 .add-friend-btn {
-  width: 40px;
-  height: 40px;
-  background: none;
+  width: 42px;
+  height: 42px;
   border: none;
+  background: none;
   cursor: pointer;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .add-friend-btn img {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
 }
 
-/* Friend list */
+.add-friend-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
 .friend-list {
   flex: 1;
   display: flex;
@@ -63,7 +67,6 @@
   overflow-y: auto;
 }
 
-/* Individual friend item - slightly darker yellow */
 .friend-item {
   display: flex;
   align-items: center;
@@ -71,11 +74,6 @@
   padding: 14px 18px;
   background: #f5e6a8;
   border-radius: 12px;
-  cursor: pointer;
-}
-
-.friend-item:hover {
-  background: #f0dc8e;
 }
 
 .friend-avatar {
@@ -92,13 +90,11 @@
   color: #3b2a20;
 }
 
-/* Friend request button - bottom left, nav button style */
 .friend-request {
-  padding: 12px 20px;
+  padding: 16px;
 }
 
 .friend-request-btn {
-  text-decoration: none;
   color: #5a3a26;
   background: #f3c64a;
   padding: 10px 20px;
@@ -111,7 +107,83 @@
   cursor: pointer;
 }
 
-.friend-request-btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.18);
+/* Profile popup overlay */
+.profile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.profile-card {
+  position: relative;
+  width: 500px;
+  height: 600px;
+  background: #fef3cf;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  border: 2px solid #3b2a20;
+}
+
+.profile-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.profile-close-btn img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.profile-close-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.profile-avatar-wrap {
+  width: 200px;
+  height: 200px;
+  background: #ffffff;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-pic {
+  width: 160px;
+  height: 160px;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.profile-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #3b2a20;
+}
+
+.profile-rank {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
 }

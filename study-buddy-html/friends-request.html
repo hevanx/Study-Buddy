@@ -3,33 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- CHANGE: Update the page title -->
-  <title>Page Title - Study Buddy</title>
-
-  <!-- Fonts -->
+  <title>Friend Requests - Study Buddy</title>
   <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
-
-  <!-- Shared styles (required) -->
   <link rel="stylesheet" href="styles/nav.css" />
-
-  <!-- Page-specific styles (optional - add your own css file) -->
-  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/friends-request.css" />
 </head>
 
 <body class="sb">
-  <!-- ==============================
-       HEADER / NAV BAR
-       (Same on every page)
-  =============================== -->
   <header class="sb-header">
     <nav class="sb-topnav" aria-label="Primary">
       <a href="index.html" class="sb-logo">Study Buddy</a>
-
       <div class="sb-rank-wrap" aria-label="Rank">
         <a href="ranked.html"><img src="assets/RankLogo.png" alt="Rank badge" class="sb-rank-badge" /></a>
       </div>
-
       <div class="sb-nav-links">
         <a class="sb-nav-btn" href="leaderboard.html">Leader board</a>
         <a class="sb-nav-btn" href="friends.html">Friends</a>
@@ -38,36 +24,37 @@
     </nav>
   </header>
 
-  <!-- ==============================
-       MAIN CONTENT
-       (Change this for each page)
-  =============================== -->
   <main class="sb-main">
-
-    <!-- YOUR PAGE CONTENT GOES HERE -->
-
+<div class="friends-container">
+  <div class="top">
+    <a href="friends.html" class="back-btn">←</a>
+    <h1>Friend Requests</h1>
+  </div>
+  <div class="request-list">
+    <div class="request-item">
+      <img src="assets/person.png" alt="Friend" class="friend-avatar">
+      <span class="friend-name">PersonOne1</span>
+      <div class="request-actions">
+        <button class="action-btn accept" type="button"><img src="assets/check.png" alt="Accept"></button>
+        <button class="action-btn decline" type="button"><img src="assets/cancel.png" alt="Decline"></button>
+      </div>
+    </div>
+  </div>
+</div>
   </main>
 
-  <!-- ==============================
-       SETTINGS PANEL
-       (Same on every page - required for settings to work)
-  =============================== -->
   <section id="settings-panel" class="sb-settings" aria-label="Settings">
     <div class="sb-settings-header">
       <a href="#" class="sb-back" aria-label="Close settings">←</a>
       <h2 class="sb-settings-title">Settings</h2>
       <div></div>
     </div>
-
     <div class="sb-settings-content">
       <a class="sb-settings-item" href="profile.html">Profile</a>
       <a class="sb-settings-item" href="login.html">Log out</a>
     </div>
   </section>
 
-  <!-- ==============================
-       SCRIPTS (if needed)
-  =============================== -->
   <script src="scripts/main.js"></script>
 </body>
 </html>

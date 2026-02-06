@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- CHANGE: Update the page title -->
-  <title>Page Title - Study Buddy</title>
+  <title>Ranked Status - Study Buddy</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
@@ -13,8 +12,8 @@
   <!-- Shared styles (required) -->
   <link rel="stylesheet" href="styles/nav.css" />
 
-  <!-- Page-specific styles (optional - add your own css file) -->
-  <link rel="stylesheet" href="styles/main.css" />
+  <!-- Page-specific styles -->
+  <link rel="stylesheet" href="styles/ranked-screen.css" />
 </head>
 
 <body class="sb">
@@ -40,11 +39,27 @@
 
   <!-- ==============================
        MAIN CONTENT
-       (Change this for each page)
   =============================== -->
   <main class="sb-main">
+<div class="rewards-container">
+  <div class="title">
+    <h1>Ranked Details</h1>
+    
+  </div>
 
-    <!-- YOUR PAGE CONTENT GOES HERE -->
+  <div class="rewards-columns">
+    <div class="rewards-col">
+      <a class="tab active">Ranked Status</a>
+      <a class="tab" href="rewards.html">Ranked Rewards</a>
+    </div>
+    <div class="rewards-col">
+      <img src="assets/BronzeAward.png" alt="bronze logo">
+      <img src="assets/XPBar 1.png" alt="XP bar" class="xp">
+      <img src="assets/SilverAward.png" alt="silver logo">
+    </div>
+ 
+  </div>
+</div> <!-- End of rewards-container -->
 
   </main>
 

@@ -12,6 +12,14 @@
   padding: 0;
 }
 
+/* Prevent body scroll on desktop - keeps nav consistent across pages */
+@media (min-width: 768px) {
+  .sb {
+    height: 100svh;
+    overflow: hidden;
+  }
+}
+
 .sb-header {
   background: #F6EFDF;
   border-bottom: 2px solid #000000;

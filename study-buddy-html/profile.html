@@ -3,33 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- CHANGE: Update the page title -->
-  <title>Page Title - Study Buddy</title>
-
-  <!-- Fonts -->
+  <title>Profile - Study Buddy</title>
   <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
-
-  <!-- Shared styles (required) -->
   <link rel="stylesheet" href="styles/nav.css" />
-
-  <!-- Page-specific styles (optional - add your own css file) -->
-  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/profile.css" />
 </head>
 
 <body class="sb">
-  <!-- ==============================
-       HEADER / NAV BAR
-       (Same on every page)
-  =============================== -->
   <header class="sb-header">
     <nav class="sb-topnav" aria-label="Primary">
       <a href="index.html" class="sb-logo">Study Buddy</a>
-
       <div class="sb-rank-wrap" aria-label="Rank">
         <a href="ranked.html"><img src="assets/RankLogo.png" alt="Rank badge" class="sb-rank-badge" /></a>
       </div>
-
       <div class="sb-nav-links">
         <a class="sb-nav-btn" href="leaderboard.html">Leader board</a>
         <a class="sb-nav-btn" href="friends.html">Friends</a>
@@ -38,36 +24,28 @@
     </nav>
   </header>
 
-  <!-- ==============================
-       MAIN CONTENT
-       (Change this for each page)
-  =============================== -->
   <main class="sb-main">
-
-    <!-- YOUR PAGE CONTENT GOES HERE -->
-
+    <div class="profile-card">
+      <div class="profile-avatar-wrap">
+        <img src="assets/DuckShirt.png" alt="Profile" class="profile-pic">
+      </div>
+      <span class="profile-name">User</span>
+      <img src="assets/DiamondAward.png" alt="Rank" class="profile-rank">
+    </div>
   </main>
 
-  <!-- ==============================
-       SETTINGS PANEL
-       (Same on every page - required for settings to work)
-  =============================== -->
   <section id="settings-panel" class="sb-settings" aria-label="Settings">
     <div class="sb-settings-header">
       <a href="#" class="sb-back" aria-label="Close settings">←</a>
       <h2 class="sb-settings-title">Settings</h2>
       <div></div>
     </div>
-
     <div class="sb-settings-content">
       <a class="sb-settings-item" href="profile.html">Profile</a>
       <a class="sb-settings-item" href="login.html">Log out</a>
     </div>
   </section>
 
-  <!-- ==============================
-       SCRIPTS (if needed)
-  =============================== -->
   <script src="scripts/main.js"></script>
 </body>
 </html>

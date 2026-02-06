@@ -21,11 +21,28 @@
 .top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 14px;
   padding: 12px 20px;
   border-bottom: 1px solid #3b2a20;
   background: #e8d5a3;
   border-radius: 10px 10px 0 0;
+}
+
+.back-btn {
+  font-size: 26px;
+  font-weight: 700;
+  color: #3b2a20;
+  text-decoration: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .top h1 {
@@ -36,25 +53,8 @@
   color: #3b2a20;
 }
 
-.add-friend-btn {
-  width: 40px;
-  height: 40px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.add-friend-btn img {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
-}
-
-/* Friend list */
-.friend-list {
+/* Request list */
+.request-list {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -63,19 +63,14 @@
   overflow-y: auto;
 }
 
-/* Individual friend item - slightly darker yellow */
-.friend-item {
+/* Request item - same layout as friend item */
+.request-item {
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 14px 18px;
   background: #f5e6a8;
   border-radius: 12px;
-  cursor: pointer;
-}
-
-.friend-item:hover {
-  background: #f0dc8e;
 }
 
 .friend-avatar {
@@ -90,28 +85,34 @@
   font-size: 20px;
   font-weight: 600;
   color: #3b2a20;
+  flex: 1;
 }
 
-/* Friend request button - bottom left, nav button style */
-.friend-request {
-  padding: 12px 20px;
+/* Accept / Decline buttons pushed to far right */
+.request-actions {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
 }
 
-.friend-request-btn {
-  text-decoration: none;
-  color: #5a3a26;
-  background: #f3c64a;
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.18);
-  border: 2px solid rgba(0, 0, 0, 0.12);
+.action-btn {
+  width: 42px;
+  height: 42px;
+  border: none;
+  background: none;
   cursor: pointer;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.friend-request-btn:active {
-  transform: translateY(2px);
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.18);
+.action-btn img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.action-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
 }
