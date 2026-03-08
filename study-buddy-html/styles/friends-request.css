@@ -1,0 +1,118 @@
+.sb-main {
+  height: calc(100svh - 86px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(10px, 2vh, 20px) 16px;
+  overflow: hidden;
+}
+
+.friends-container {
+  width: 1150px;
+  height: 650px;
+  margin: auto;
+  background-color: #fef3cf;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top bar */
+.top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #3b2a20;
+  background: #e8d5a3;
+  border-radius: 10px 10px 0 0;
+}
+
+.back-btn {
+  font-size: 26px;
+  font-weight: 700;
+  color: #3b2a20;
+  text-decoration: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.top h1 {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  color: #3b2a20;
+}
+
+/* Request list */
+.request-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+/* Request item - same layout as friend item */
+.request-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: #f5e6a8;
+  border-radius: 12px;
+}
+
+.friend-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.friend-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #3b2a20;
+  flex: 1;
+}
+
+/* Accept / Decline buttons pushed to far right */
+.request-actions {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.action-btn {
+  width: 42px;
+  height: 42px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.action-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}

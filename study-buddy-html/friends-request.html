@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Friend Requests - Study Buddy</title>
+  <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
+  <link rel="stylesheet" href="styles/nav.css" />
+  <link rel="stylesheet" href="styles/friends-request.css" />
+</head>
+
+<body class="sb">
+  <header class="sb-header">
+    <nav class="sb-topnav" aria-label="Primary">
+      <a href="index.html" class="sb-logo">Study Buddy</a>
+      <div class="sb-rank-wrap" aria-label="Rank">
+        <a href="ranked.html"><img src="assets/RankLogo.png" alt="Rank badge" class="sb-rank-badge sb-rank-badge--unranked" /></a>
+      </div>
+      <div class="sb-nav-links">
+        <a class="sb-nav-btn" href="leaderboard.html">Leader board</a>
+        <a class="sb-nav-btn" href="friends.html">Friends</a>
+        <a class="sb-nav-btn" href="#settings-panel">Settings</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="sb-main">
+<div class="friends-container">
+  <div class="top">
+    <a href="friends.html" class="back-btn">←</a>
+    <h1>Friend Requests</h1>
+  </div>
+  <div class="request-list">
+    <div class="request-item">
+      <img src="assets/person.png" alt="Friend" class="friend-avatar">
+      <span class="friend-name">PersonOne1</span>
+      <div class="request-actions">
+        <button class="action-btn accept" type="button"><img src="assets/check.png" alt="Accept"></button>
+        <button class="action-btn decline" type="button"><img src="assets/cancel.png" alt="Decline"></button>
+      </div>
+    </div>
+  </div>
+</div>
+  </main>
+
+  <section id="settings-panel" class="sb-settings" aria-label="Settings">
+    <div class="sb-settings-header">
+      <a href="#" class="sb-back" aria-label="Close settings">←</a>
+      <h2 class="sb-settings-title">Settings</h2>
+      <div></div>
+    </div>
+    <div class="sb-settings-content">
+      <a class="sb-settings-item" href="profile.html">Profile</a>
+      <a class="sb-settings-item" href="login.html">Log out</a>
+    </div>
+  </section>
+
+  <script src="scripts/main.js"></script>
+</body>
+</html>

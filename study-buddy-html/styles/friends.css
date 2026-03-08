@@ -1,0 +1,319 @@
+/* ── Page layout ────────────────────────────────────────────── */
+.sb-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(24px, 4vh, 48px) 16px clamp(16px, 2vh, 30px);
+  overflow-y: auto;
+}
+
+/* ── Outer container — matches leaderboard panel ─────────────── */
+.friends-container {
+  width: min(860px, 94vw);
+  background: #f3c64a;
+  border-radius: 12px;
+  padding: clamp(14px, 2vw, 22px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Top bar — title + search icon ───────────────────────────── */
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.top h1 {
+  margin: 0;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 800;
+  font-family: 'Inter', sans-serif;
+  color: #3b2a20;
+  letter-spacing: 0.3px;
+  text-align: center;
+  flex: 1;
+}
+
+.add-friend-btn {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+  transition: background 0.12s;
+  flex-shrink: 0;
+}
+
+.add-friend-btn:hover  { background: rgba(255, 255, 255, 0.75); }
+.add-friend-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,.12); }
+
+.add-friend-btn img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+/* ── Inner cream box — wraps tabs + content (mirrors .sb-panel-inner) */
+.sb-friend-inner {
+  background: #f6efdf;
+  border-radius: 8px;
+  padding: clamp(10px, 1.5vw, 14px) clamp(12px, 1.8vw, 16px);
+  border: 2px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Tab strip — matches .sb-customize-tabs ──────────────────── */
+.sb-friend-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Individual tab — matches .sb-customize-tab */
+.sb-friend-tab {
+  appearance: none;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  background: #ffffff;
+  color: #5a3a26;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(13px, 1.4vw, 15px);
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.10);
+  position: relative;
+  transition: background 0.12s;
+}
+
+.sb-friend-tab:hover  { background: #fffdf7; }
+.sb-friend-tab:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,.10); }
+
+/* Active tab — matches .sb-customize-tab--active */
+.sb-friend-tab--active {
+  background: #f3c64a;
+  border-color: #d9a520;
+}
+
+/* ── Badge (unread request count) ───────────────────────────── */
+.sb-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background: #c0392b;
+  color: #fff;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 800;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+/* ── Panel wrappers ─────────────────────────────────────────── */
+.sb-friend-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Scrollable lists ────────────────────────────────────────── */
+.friend-list,
+.request-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1vh, 10px);
+  max-height: clamp(280px, 46vh, 500px);
+  overflow-y: auto;
+}
+
+/* ── Loading / empty states ──────────────────────────────────── */
+.sb-friend-loading,
+.sb-friend-empty {
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #8a6a50;
+  padding: 18px 0 10px;
+  margin: 0;
+}
+
+/* ── Friend row — matches .sb-row from leaderboard ───────────── */
+.friend-item,
+.request-item {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: clamp(8px, 1vh, 11px) clamp(10px, 1.4vw, 14px);
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.2vw, 12px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.10), 0 4px 10px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.friend-item {
+  cursor: pointer;
+  transition: background 0.10s;
+}
+
+.friend-item:hover { background: #fffdf7; }
+
+/* ── Avatar ─────────────────────────────────────────────────── */
+.friend-avatar {
+  width: clamp(32px, 3.5vw, 40px);
+  height: clamp(32px, 3.5vw, 40px);
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* ── Name — matches .sb-row-name ────────────────────────────── */
+.friend-name {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(14px, 1.6vw, 16px);
+  font-weight: 600;
+  color: #1f1f1f;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Action button group ─────────────────────────────────────── */
+.request-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ── Icon action buttons (accept ✓ / decline ✗ / cancel / view)
+   Match .sb-customize-card style: white, border, box-shadow,
+   press effect on active.                                      */
+.action-btn {
+  width: 38px;
+  height: 38px;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  background: #ffffff;
+  cursor: pointer;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.10);
+  transition: background 0.1s;
+  flex-shrink: 0;
+}
+
+.action-btn img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.action-btn:hover  { background: #fffdf7; }
+.action-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,.10); }
+.action-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* Accept gets a soft green tint on hover */
+.action-btn.accept:hover { background: #eafbea; border-color: #6dbf6d; }
+
+/* ── Relationship tag shown in search results ───────────────── */
+.sb-rel-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #5a3a26;
+  background: #f3c64a;
+  border: 2px solid rgba(0, 0, 0, 0.10);
+  border-radius: 99px;
+  padding: 3px 12px;
+}
+
+/* ── "Add Friend" button — matches .sb-nav-btn ───────────────── */
+.sb-add-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(13px, 1.4vw, 15px);
+  font-weight: 700;
+  color: #5a3a26;
+  background: #f3c64a;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  padding: 7px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.16);
+  transition: background 0.1s;
+}
+
+.sb-add-btn:hover   { background: #f0b830; }
+.sb-add-btn:active  { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,.16); }
+.sb-add-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* Sent confirmation state */
+.sb-sent-btn { background: #d4edda !important; border-color: #6dbf6d !important; color: #2d6a2d !important; }
+
+/* ── Inline error text ───────────────────────────────────────── */
+.sb-row-err {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #c0392b;
+  padding: 0 4px;
+}
+
+/* ── Search bar (Find Friends tab) ──────────────────────────── */
+.sb-search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.sb-search-bar input {
+  flex: 1;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(14px, 1.5vw, 15px);
+  padding: 9px 14px;
+  border: 2px solid rgba(0, 0, 0, 0.14);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #3b2a20;
+  outline: none;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.sb-search-bar input:focus { border-color: #d9a520; }
+.sb-search-bar input::placeholder { color: #b09070; }
+
+/* Search submit button — matches .sb-nav-btn */
+.friend-request-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(13px, 1.4vw, 15px);
+  font-weight: 700;
+  color: #5a3a26;
+  background: #f3c64a;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  padding: 9px 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.16);
+  transition: background 0.1s;
+}
+
+.friend-request-btn:hover  { background: #f0b830; }
+.friend-request-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,.16); }

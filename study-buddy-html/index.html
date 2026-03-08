@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Study Buddy</title>
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/nav.css" />
+
+</head>
+
+<body class="sb">
+  <header class="sb-header">
+    <nav class="sb-topnav" aria-label="Primary">
+      <a href="index.html" class="sb-logo">Study Buddy</a>
+
+      <div class="sb-rank-wrap" aria-label="Rank">
+        <a href="ranked.html">
+          <img src="assets/RankLogo.png" alt="Rank badge" class="sb-rank-badge sb-rank-badge--unranked" />
+        </a>
+      </div>
+
+      <div class="sb-nav-links">
+        <a class="sb-nav-btn" href="leaderboard.html">Leader board</a>
+        <a class="sb-nav-btn" href="friends.html">Friends</a>
+        <a class="sb-nav-btn" href="#settings-panel">Settings</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="sb-main">
+    <section class="sb-center" aria-label="Study timer">
+      <p class="sb-username">Username</p>
+
+      <a href="#customize-panel" class="sb-mascot-link" aria-label="Customize your buddy">
+        <img
+          src="assets/DuckCrown.png"
+          alt="Study Buddy mascot"
+          class="sb-mascot"
+          id="mascot-img"
+        />
+      </a>
+
+      <div class="sb-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Rank progress" id="xp-progress-bar">
+        <div class="sb-progress-fill" id="xp-progress-fill" style="width: 0%"></div>
+      </div>
+
+      <p class="sb-xp-label" id="xp-label" aria-live="polite">Unranked · 0 / 100 XP</p>
+
+      <div class="sb-timer-card" aria-label="Timer card">
+        <div class="sb-time" aria-live="polite" id="timer-display">00:00</div>
+
+        <div class="sb-timer-controls">
+          <button class="sb-start-btn" type="button" id="timer-btn" aria-label="Start timer">
+            <span class="sb-play" aria-hidden="true" id="timer-btn-icon"></span>
+            <span id="timer-btn-label">START</span>
+          </button>
+          <button class="sb-reset-btn" type="button" id="timer-reset-btn" aria-label="Reset timer" hidden>
+            Reset
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Settings panel lives outside main -->
+  <section id="settings-panel" class="sb-settings" aria-label="Settings">
+    <div class="sb-settings-header">
+      <a href="#" class="sb-back" aria-label="Close settings">←</a>
+      <h2 class="sb-settings-title">Settings</h2>
+      <div></div>
+    </div>
+
+    <div class="sb-settings-content">
+      <a class="sb-settings-item" href="profile.html">Profile</a>
+      <a class="sb-settings-item" href="login.html">Log out</a>
+    </div>
+  </section>
+
+  <!-- Customize Buddy panel (opens when clicking the duck) -->
+  <section id="customize-panel" class="sb-settings" aria-label="Customize Buddy">
+    <div class="sb-settings-header">
+      <a href="#" class="sb-back" aria-label="Close customize">&#8592;</a>
+      <h2 class="sb-settings-title">Customize</h2>
+      <div></div>
+    </div>
+
+    <div class="sb-customize-tabs" role="tablist" aria-label="Item categories">
+      <button class="sb-customize-tab sb-customize-tab--active" data-category="hat" role="tab" type="button">Hat</button>
+      <button class="sb-customize-tab" data-category="shirt" role="tab" type="button">Shirt</button>
+      <button class="sb-customize-tab" data-category="shoes" role="tab" type="button">Shoes</button>
+    </div>
+
+    <div class="sb-customize-grid" id="customize-grid">
+      <!-- Items rendered by main.js -->
+    </div>
+    <p class="sb-customize-msg" id="customize-msg" aria-live="polite"></p>
+  </section>
+
+  <script>
+    // After login redirect, capture userId/username from URL and persist to localStorage
+    (function () {
+      const p = new URLSearchParams(window.location.search);
+      const uid = p.get('userId');
+      const uname = p.get('username');
+      if (uid) {
+        localStorage.setItem('sb-userId', uid);
+        localStorage.setItem('sb-username', uname || '');
+        history.replaceState({}, '', window.location.pathname);
+      }
+    })();
+  </script>
+  <script src="scripts/ProgressRepository.js"></script>
+  <script src="scripts/xpSystem.js"></script>
+  <script src="scripts/timer.js"></script>
+  <script>
+    /* Init BEFORE main.js so window._sbXp is available when renderGrid() runs */
+    (async function () {
+      // Verify session is still valid — redirect to login if not
+      const me = await fetch('/api/auth/me', { credentials: 'include' }).then(r => r.ok ? r.json() : null).catch(() => null);
+      if (!me) {
+        localStorage.removeItem('sb-userId');
+        localStorage.removeItem('sb-username');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Always use the server session as the source of truth
+      localStorage.setItem('sb-userId', me.id);
+      localStorage.setItem('sb-username', me.username);
+
+      const username = me.username;
+      if (username) {
+        const el = document.querySelector('.sb-username');
+        if (el) el.textContent = username;
+      }
+      window._sbXp = new XpSystem(new ApiProgressRepository('/api'));
+      await window._sbXp.init(String(me.id));
+      window._sbTimer = new StudyTimer(window._sbXp);
+    })();
+  </script>
+  <script src="scripts/main.js"></script>
+
+  <!-- ── DEV PANEL (XP tester) ── remove before production ── -->
+  <div id="dev-panel" style="
+    position:fixed; bottom:12px; right:12px; z-index:9999;
+    background:#1a1a2e; border:1px solid #444; border-radius:8px;
+    padding:10px 12px; font-family:monospace; font-size:12px; color:#eee;
+    box-shadow:0 4px 12px rgba(0,0,0,.5); min-width:200px;">
+    <div style="margin-bottom:6px; font-weight:bold; color:#aaa;">🛠 XP Dev Tools</div>
+    <div style="display:flex; flex-wrap:wrap; gap:4px; margin-bottom:8px;">
+      <button onclick="setDevXp(0)"    style="flex:1;padding:3px 6px;background:#333;color:#eee;border:1px solid #555;border-radius:4px;cursor:pointer;">Unranked<br><span style="color:#888">0</span></button>
+      <button onclick="setDevXp(100)"  style="flex:1;padding:3px 6px;background:#333;color:#cd7f32;border:1px solid #555;border-radius:4px;cursor:pointer;">Bronze<br><span style="color:#888">100</span></button>
+      <button onclick="setDevXp(300)"  style="flex:1;padding:3px 6px;background:#333;color:#c0c0c0;border:1px solid #555;border-radius:4px;cursor:pointer;">Silver<br><span style="color:#888">300</span></button>
+      <button onclick="setDevXp(600)"  style="flex:1;padding:3px 6px;background:#333;color:#ffd700;border:1px solid #555;border-radius:4px;cursor:pointer;">Gold<br><span style="color:#888">600</span></button>
+      <button onclick="setDevXp(1000)" style="flex:1;padding:3px 6px;background:#333;color:#b9f2ff;border:1px solid #555;border-radius:4px;cursor:pointer;">Diamond<br><span style="color:#888">1000</span></button>
+    </div>
+    <div style="display:flex; gap:4px;">
+      <input id="dev-xp-input" type="number" min="0" placeholder="Custom XP"
+        style="flex:1;padding:3px 6px;background:#222;color:#eee;border:1px solid #555;border-radius:4px;width:0;" />
+      <button onclick="setDevXp(Number(document.getElementById('dev-xp-input').value))"
+        style="padding:3px 8px;background:#444;color:#eee;border:1px solid #666;border-radius:4px;cursor:pointer;">Set</button>
+    </div>
+  </div>
+  <script>
+    function setDevXp(xp) {
+      if (isNaN(xp) || xp < 0) return;
+
+      // 100 XP = 1 hour = 3600 s  →  1 XP = 36 s
+      const equivSeconds = xp * 36;
+      const equivMs      = equivSeconds * 1000;
+
+      if (window._sbXp) {
+        // Stop the timer cleanly so it can resume from the new time
+        if (window._sbTimer) {
+          const t = window._sbTimer;
+          if (t._intervalId !== null) { clearInterval(t._intervalId); t._intervalId = null; }
+          if (t._state === 'running') t._xp.endSession();
+          t._accumulatedMs = equivMs;
+          t._segmentStart  = null;
+          t._state         = 'stopped';
+          t._render();
+        }
+
+        window._sbXp._totalXp           = xp;
+        window._sbXp._totalStudySeconds = equivSeconds;
+        window._sbXp._save();
+        window._sbXp._render();
+      } else {
+        localStorage.setItem('sb-progress-guest', JSON.stringify({
+          totalXp: xp, totalStudySeconds: equivSeconds, lastUpdatedAt: Date.now()
+        }));
+      }
+
+      if (typeof renderGrid === 'function') renderGrid();
+    }
+  </script>
+  <!-- ── END DEV PANEL ── -->
+</body>
+</html>
+
+

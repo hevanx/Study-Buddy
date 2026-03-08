@@ -1,0 +1,160 @@
+/* ── Page layout — same as profile.css ──────────────────────── */
+.sb-main {
+  height: calc(100svh - 86px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(10px, 2vh, 20px) 16px;
+  overflow: hidden;
+}
+
+/* ── Profile card — matches profile.css exactly ─────────────── */
+.profile-card {
+  position: relative;
+  width: min(500px, 94vw);
+  background: #fef3cf;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 44px 32px 32px;
+  border: 2px solid #3b2a20;
+}
+
+/* ── Close / back button ─────────────────────────────────────── */
+.profile-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  text-decoration: none;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  background: #ffffff;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.10);
+  transition: background 0.1s;
+}
+
+.profile-close-btn:hover  { background: #fffdf7; }
+.profile-close-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,.10); }
+
+.profile-close-btn img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+/* ── Duck avatar — matches profile.css ──────────────────────── */
+.profile-avatar-wrap {
+  width: 200px;
+  height: 200px;
+  background: #ffffff;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-pic {
+  width: 160px;
+  height: 160px;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+/* ── Username — matches profile.css ─────────────────────────── */
+.profile-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #3b2a20;
+}
+
+/* ── Rank block — matches profile.css ───────────────────────── */
+.profile-rank-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.profile-rank {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.profile-rank-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #3b2a20;
+  letter-spacing: 0.3px;
+}
+
+/* ── fp-body wrapper ─────────────────────────────────────────── */
+.fp-body {
+  display: contents;   /* lets children participate in the card's flex gap */
+}
+
+/* ── Stats row — white card matching .sb-row from leaderboard ── */
+.fp-stats {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.10), 0 4px 10px rgba(0, 0, 0, 0.06);
+  padding: 14px 0;
+  justify-content: center;
+}
+
+.fp-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 0 28px;
+}
+
+.fp-stat-val {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #3b2a20;
+}
+
+.fp-stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #8a6a50;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fp-stat-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.10);
+  flex-shrink: 0;
+}
+
+/* ── Loading / error states ──────────────────────────────────── */
+.fp-loading,
+.fp-error {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #8a6a50;
+  text-align: center;
+}
+
+.fp-error { color: #c0392b; }

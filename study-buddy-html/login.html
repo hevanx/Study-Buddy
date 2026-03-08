@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Study Buddy</title>
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+  <link rel="stylesheet" href="styles/login.css">
+
+
+</head>
+
+<body>
+
+  <div class="form-section">
+    <form action="/api/auth/login" method="POST">
+      <div class="subtitle">Start your focus path</div>
+      <h1>Welcome back</h1>
+
+      <label for="email">Email</label>
+      <input id="email" type="email" name="email" required />
+
+      <label for="password">Password</label>
+      <input id="password" type="password" name="password" required />
+
+      <button type="submit">Sign In</button>
+
+      <div id="error-message" class="error" style="display:none;color:red;margin-top:10px;"></div>
+
+      <div class="link">
+        <a href="forgot-password.html">Forgot password?</a>
+      </div>
+
+      <div class="link">
+        Don't have an account? <a href="register.html">Register!</a>
+      </div>
+    </form>
+  </div>
+
+  <div class="logo-section">
+    <img src="assets/logo.png" alt="Study Buddy Logo" />
+  </div>
+  
+  <script>
+    // display message passed via query string
+    function getQueryParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+    const msg = getQueryParam('message');
+    if (msg) {
+      const el = document.getElementById('error-message');
+      el.textContent = decodeURIComponent(msg);
+      el.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

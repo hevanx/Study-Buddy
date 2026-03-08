@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Friends - Study Buddy</title>
+  <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
+  <link rel="stylesheet" href="styles/nav.css" />
+  <link rel="stylesheet" href="styles/friends.css" />
+</head>
+
+<body class="sb">
+  <header class="sb-header">
+    <nav class="sb-topnav" aria-label="Primary">
+      <a href="index.html" class="sb-logo">Study Buddy</a>
+      <div class="sb-rank-wrap" aria-label="Rank">
+        <a href="ranked.html"><img src="assets/RankLogo.png" alt="Rank badge" class="sb-rank-badge sb-rank-badge--unranked" /></a>
+      </div>
+      <div class="sb-nav-links">
+        <a class="sb-nav-btn" href="leaderboard.html">Leader board</a>
+        <a class="sb-nav-btn" href="friends.html">Friends</a>
+        <a class="sb-nav-btn" href="#settings-panel">Settings</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="sb-main">
+    <div class="friends-container">
+
+      <!-- Top bar -->
+      <div class="top">
+        <h1>Friends</h1>
+        <button class="add-friend-btn" id="top-search-btn" title="Find friends">
+          <img src="assets/search.png" alt="Find Friends">
+        </button>
+      </div>
+
+      <!-- Inner cream box: tabs + all panels live inside here -->
+      <div class="sb-friend-inner">
+
+        <!-- Tab strip -->
+        <div class="sb-friend-tabs" role="tablist">
+          <button id="tab-friends"  class="sb-friend-tab" role="tab" aria-selected="false">Friends</button>
+          <button id="tab-requests" class="sb-friend-tab" role="tab" aria-selected="false">
+            Requests <span id="badge-requests" class="sb-badge" hidden></span>
+          </button>
+          <button id="tab-sent"     class="sb-friend-tab" role="tab" aria-selected="false">
+            Sent <span id="badge-sent" class="sb-badge" hidden></span>
+          </button>
+          <button id="tab-search"   class="sb-friend-tab" role="tab" aria-selected="false">Find Friends</button>
+        </div>
+
+        <!-- Panel: Friends -->
+        <div id="panel-friends" class="sb-friend-panel" hidden>
+          <div class="friend-list" id="friends-list">
+            <p class="sb-friend-loading">Loading…</p>
+          </div>
+        </div>
+
+        <!-- Panel: Incoming Requests -->
+        <div id="panel-requests" class="sb-friend-panel" hidden>
+          <div class="request-list" id="incoming-list">
+            <p class="sb-friend-loading">Loading…</p>
+          </div>
+        </div>
+
+        <!-- Panel: Sent / Outgoing -->
+        <div id="panel-sent" class="sb-friend-panel" hidden>
+          <div class="request-list" id="outgoing-list">
+            <p class="sb-friend-loading">Loading…</p>
+          </div>
+        </div>
+
+        <!-- Panel: Find Friends (search) -->
+        <div id="panel-search" class="sb-friend-panel" hidden>
+          <div class="sb-search-bar">
+            <input id="friend-search-input"
+                   type="text"
+                   placeholder="Search by username…"
+                   autocomplete="off" />
+            <button id="friend-search-btn" class="friend-request-btn">Search</button>
+          </div>
+          <div class="request-list" id="search-list"></div>
+        </div>
+
+      </div><!-- /.sb-friend-inner -->
+
+    </div><!-- /.friends-container -->
+  </main>
+
+  <section id="settings-panel" class="sb-settings" aria-label="Settings">
+    <div class="sb-settings-header">
+      <a href="#" class="sb-back" aria-label="Close settings">←</a>
+      <h2 class="sb-settings-title">Settings</h2>
+      <div></div>
+    </div>
+    <div class="sb-settings-content">
+      <a class="sb-settings-item" href="profile.html">Profile</a>
+      <a class="sb-settings-item" href="login.html">Log out</a>
+    </div>
+  </section>
+
+  <script src="scripts/ProgressRepository.js"></script>
+  <script src="scripts/xpSystem.js"></script>
+  <script src="scripts/main.js"></script>
+  <script>
+    (async function () {
+      var userId = localStorage.getItem('sb-userId') || 'guest';
+      var xp = new XpSystem(new ApiProgressRepository('/api'));
+      await xp.init(userId);
+    })();
+  </script>
+  <script src="scripts/friends.js"></script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard - Study Buddy</title>
+  <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
+  <link rel="stylesheet" href="styles/nav.css" />
+  <link rel="stylesheet" href="styles/leaderboard.css" />
+</head>
+
+<body class="sb">
+  <header class="sb-header">
+    <nav class="sb-topnav" aria-label="Primary">
+      <a href="index.html" class="sb-logo">Study Buddy</a>
+
+      <div class="sb-rank-wrap" aria-label="Rank">
+        <a href="ranked.html"><img src="assets/RankLogo.png" alt="Rank badge" class="sb-rank-badge sb-rank-badge--unranked" /></a>
+      </div>
+
+      <div class="sb-nav-links">
+        <a class="sb-nav-btn sb-nav-btn--active" href="leaderboard.html">Leader board</a>
+        <a class="sb-nav-btn" href="friends.html">Friends</a>
+        <a class="sb-nav-btn" href="#settings-panel">Settings</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="sb-main-lb">
+    <section class="sb-panel">
+      <div class="sb-panel-header">Leaderboard</div>
+      <div class="sb-panel-inner" id="leaderboard-list">
+        <p class="sb-lb-loading">Loading...</p>
+      </div>
+    </section>
+
+    <footer class="sb-footer">
+      <p>&copy; 2026 Study Buddy. All rights reserved.</p>
+    </footer>
+  </main>
+
+  <!-- Settings panel -->
+  <section id="settings-panel" class="sb-settings" aria-label="Settings">
+    <div class="sb-settings-header">
+      <a href="#" class="sb-back" aria-label="Close settings">←</a>
+      <h2 class="sb-settings-title">Settings</h2>
+      <div></div>
+    </div>
+    <div class="sb-settings-content">
+      <a class="sb-settings-item" href="profile.html">Profile</a>
+      <a class="sb-settings-item" href="login.html">Log out</a>
+    </div>
+  </section>
+
+  <script src="scripts/ProgressRepository.js"></script>
+  <script src="scripts/xpSystem.js"></script>
+  <script src="scripts/main.js"></script>
+  <script>
+    (async function () {
+      var userId = localStorage.getItem('sb-userId') || 'guest';
+      var xp = new XpSystem(new ApiProgressRepository('/api'));
+      await xp.init(userId);
+    })();
+  </script>
+  <script>
+    (async function () {
+      const myId  = localStorage.getItem('sb-userId');
+      const list  = document.getElementById('leaderboard-list');
+
+      try {
+        // Future: pass ?filter=friends to show only friends + yourself
+        const res   = await fetch('/api/leaderboard', { credentials: 'include' });
+        if (!res.ok) throw new Error('Failed');
+        const users = await res.json();
+
+        if (users.length === 0) {
+          list.innerHTML = '<p class="sb-lb-empty">No users yet. Be the first to study!</p>';
+          return;
+        }
+
+        list.innerHTML = users.map((u, i) => {
+          const isYou = String(u.id) === String(myId);
+          return `
+            <div class="sb-row${isYou ? ' sb-row--you' : ''}">
+              <div class="sb-row-rank">#${i + 1}</div>
+              <div class="sb-row-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="8" r="3" stroke="currentColor" stroke-width="2"/>
+                  <path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="sb-row-name">${u.username}${isYou ? ' <span class="sb-row-you-tag">You</span>' : ''}</div>
+              <div class="sb-row-xp">${Math.floor(u.totalXp)} XP</div>
+            </div>`;
+        }).join('');
+
+      } catch (_) {
+        list.innerHTML = '<p class="sb-lb-empty">Could not load leaderboard.</p>';
+      }
+    })();
+  </script>
+</body>
+</html>

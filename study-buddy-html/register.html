@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | Study Buddy</title>
+  <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+  <link rel="stylesheet" href="styles/register.css">
+
+
+</head>
+
+<body>
+
+  <div class="form-section">
+    <form action="/api/auth/register" method="POST">
+      <div class="subtitle">Start your focus path</div>
+      <h1>Create Account</h1>
+
+      <label for="username">Username</label>
+      <input id="username" type="text" name="username"/>
+
+      <label for="email">Email</label>
+      <input id="email" type="email" name="email"/>
+
+      <label for="password">Password</label>
+      <input id="password" type="password" name="password" />
+
+      <label for="confirmpassword">Confirm Password</label>
+      <input id="confirmpassword" type="password" name="confirmpassword" />
+
+      <button type="submit">Register</button>
+
+      <div id="error-message" class="error" style="display:none;color:red;margin-top:10px;"></div>
+      <div class="link">
+        Already have an account? <a href="login.html">Sign In!</a>
+      </div>
+    </form>
+    
+  </div>
+
+  <div class="logo-section">
+    <img src="assets/logo.png" alt="Study Buddy Logo" />
+  </div>
+
+  <script>
+    // read message query param and display if exists
+    function getQueryParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+    const msg = getQueryParam('message');
+    if (msg) {
+      const el = document.getElementById('error-message');
+      el.textContent = decodeURIComponent(msg);
+      el.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

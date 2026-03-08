@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Ranked Status - Study Buddy</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
+
+  <!-- Shared styles (required) -->
+  <link rel="stylesheet" href="styles/nav.css" />
+
+  <!-- Page-specific styles -->
+  <link rel="stylesheet" href="styles/ranked-screen.css" />
+</head>
+
+<body class="sb">
+  <!-- ==============================
+       HEADER / NAV BAR
+       (Same on every page)
+  =============================== -->
+  <header class="sb-header">
+    <nav class="sb-topnav" aria-label="Primary">
+      <a href="index.html" class="sb-logo">Study Buddy</a>
+
+      <div class="sb-rank-wrap" aria-label="Rank">
+        <a href="ranked.html">
+          <img src="assets/RankLogo.png" alt="Rank badge" class="sb-rank-badge sb-rank-badge--unranked" />
+        </a>
+      </div>
+
+      <div class="sb-nav-links">
+        <a class="sb-nav-btn" href="leaderboard.html">Leader board</a>
+        <a class="sb-nav-btn" href="friends.html">Friends</a>
+        <a class="sb-nav-btn" href="#settings-panel">Settings</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==============================
+       MAIN CONTENT
+  =============================== -->
+  <main class="sb-main">
+<div class="rewards-container">
+  <div class="title">
+    <h1>Ranked Details</h1>
+    <p class="ranked-current-rank" id="ranked-rank-name">Unranked</p>
+  </div>
+
+  <div class="rewards-columns">
+    <div class="rewards-col">
+      <a class="tab active">Ranked Status</a>
+      <a class="tab" href="rewards.html">Ranked Rewards</a>
+    </div>
+    <div class="rewards-col">
+      <img src="assets/RankLogo.png" alt="current rank" id="ranked-from-badge">
+      <div class="xp-bar-wrap">
+        <div class="xp-bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="XP progress">
+          <div class="xp-bar-fill" id="ranked-xp-fill" style="width: 0%"></div>
+        </div>
+        <p class="xp-bar-label" id="ranked-xp-label" aria-live="polite">Unranked · 0 / 100 XP</p>
+      </div>
+      <img src="assets/BronzeAward.png" alt="next rank" id="ranked-to-badge">
+    </div>
+ 
+  </div>
+</div> <!-- End of rewards-container -->
+
+  </main>
+
+  <!-- ==============================
+       SETTINGS PANEL
+       (Same on every page - required for settings to work)
+  =============================== -->
+  <section id="settings-panel" class="sb-settings" aria-label="Settings">
+    <div class="sb-settings-header">
+      <a href="#" class="sb-back" aria-label="Close settings">←</a>
+      <h2 class="sb-settings-title">Settings</h2>
+      <div></div>
+    </div>
+
+    <div class="sb-settings-content">
+      <a class="sb-settings-item" href="profile.html">Profile</a>
+      <a class="sb-settings-item" href="login.html">Log out</a>
+    </div>
+  </section>
+
+  <!-- ==============================
+       SCRIPTS (if needed)
+  =============================== -->
+  <script src="scripts/ProgressRepository.js"></script>
+  <script src="scripts/xpSystem.js"></script>
+  <script src="scripts/main.js"></script>
+  <script>
+    (async function () {
+      var userId = localStorage.getItem('sb-userId') || 'guest';
+      var xp = new XpSystem(new ApiProgressRepository('/api'));
+      await xp.init(userId);
+      // No timer on this page — XP display is read-only
+    })();
+  </script>
+</body>
+</html>

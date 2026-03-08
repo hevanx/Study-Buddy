@@ -1,0 +1,189 @@
+/* MAIN PAGE CONTENT STYLES */
+/* (Nav and settings panel styles are in nav.css) */
+
+/* Prevent body scroll on desktop */
+@media (min-width: 768px) {
+  .sb {
+    height: 100svh;
+    overflow: hidden;
+  }
+}
+
+/* Main uses safe viewport height and always centers without overflowing */
+.sb-main {
+  height: calc(100svh - 86px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(10px, 2vh, 20px) 16px;
+  overflow: hidden;
+}
+
+/* Center stack scales down on short screens */
+.sb-center {
+  width: min(600px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.4vh, 10px);
+}
+
+.sb-username {
+  margin: 0;
+  font-size: clamp(14px, 1.8vw, 18px);
+  color: rgba(90, 58, 38, 0.7);
+}
+
+/* Mascot scales with viewport height so it never dominates laptops */
+.sb-mascot {
+  width: clamp(50px, 12vh, 90px);
+  height: auto;
+  display: block;
+}
+
+/* Progress bar scales a little too */
+.sb-progress {
+  width: clamp(100px, 18vw, 130px);
+  height: clamp(8px, 1vh, 10px);
+  background: #f2efe7;
+  border-radius: 999px;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.sb-progress-fill {
+  height: 100%;
+  background: #f3c64a;
+  border-radius: 999px;
+}
+
+/* Timer card scales with viewport height and never exceeds screen width */
+.sb-timer-card {
+  width: min(360px, 85vw);
+  background: #f3c64a;
+  border-radius: 10px;
+  padding: clamp(12px, 2vh, 24px) clamp(12px, 2vw, 16px)
+    clamp(10px, 1.8vh, 20px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.5vh, 14px);
+}
+
+/* This is the big one: timer font becomes responsive */
+.sb-time {
+  font-size: clamp(40px, 9vh, 64px);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #5a3a26;
+  text-align: center;
+}
+
+/* Start button scales down too */
+.sb-start-btn {
+  appearance: none;
+  border: 2px solid #f0a53a;
+  background: #f7e5c5;
+  color: #b86a2a;
+  font-weight: 900;
+  font-size: clamp(14px, 2vw, 20px);
+  letter-spacing: 1px;
+  padding: clamp(8px, 1.2vh, 10px) clamp(14px, 2.5vw, 24px);
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.15);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sb-start-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+}
+
+.sb-play {
+  width: 0;
+  height: 0;
+  border-left: clamp(8px, 1.2vw, 10px) solid #b86a2a;
+  border-top: clamp(5px, 0.9vw, 7px) solid transparent;
+  border-bottom: clamp(5px, 0.9vw, 7px) solid transparent;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Pause icon — two vertical bars */
+.sb-pause {
+  position: relative;
+  display: inline-block;
+  width: clamp(10px, 1.5vw, 14px);
+  height: clamp(10px, 1.4vh, 14px);
+  flex-shrink: 0;
+}
+
+.sb-pause::before,
+.sb-pause::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 35%;
+  background: #b86a2a;
+  border-radius: 1px;
+}
+
+.sb-pause::before { left: 0; }
+.sb-pause::after  { right: 0; }
+
+/* XP label shown below the progress bar */
+.sb-xp-label {
+  margin: 0;
+  font-size: clamp(10px, 1.4vw, 12px);
+  font-weight: 600;
+  color: rgba(90, 58, 38, 0.65);
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+
+/* Smooth fill animation for the XP bar */
+.sb-progress-fill {
+  transition: width 0.25s ease;
+}
+
+/* Wrapper that stacks the main button + reset link */
+.sb-timer-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Subtle inline reset button — only visible while paused */
+.sb-reset-btn {
+  appearance: none;
+  background: none;
+  border: none;
+  color: #b86a2a;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(11px, 1.4vw, 13px);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  padding: 2px 8px;
+  opacity: 0.6;
+  text-transform: uppercase;
+  text-decoration: underline;
+}
+
+.sb-reset-btn:hover {
+  opacity: 1;
+}
+
+/* Extra safety for really short laptop screens */
+@media (max-height: 720px) {
+  .sb-main { padding-top: 10px; padding-bottom: 14px; }
+  .sb-center { gap: 10px; }
+  .sb-timer-card { padding-top: 18px; padding-bottom: 18px; }
+}

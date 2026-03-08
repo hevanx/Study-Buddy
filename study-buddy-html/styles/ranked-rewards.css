@@ -1,0 +1,132 @@
+.sb-main {
+  height: calc(100svh - 86px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(10px, 2vh, 20px) 16px;
+  overflow: hidden;
+}
+
+.rewards-container {
+  width: 1150px;
+  height: 650px;
+  margin: auto;
+  border: 1px black solid;
+  border-radius: 10px;
+  background-color: #fef3cf;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title bar: text left, X button right */
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid #3b2a20;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  color: #3b2a20;
+}
+
+.close-btn {
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Title bar: its own color */
+.title {
+  background: #e8d5a3;
+}
+
+/* 5-column grid */
+.rewards-columns {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+  flex: 1;
+}
+
+/* Each column: stack items vertically, black divider between */
+.rewards-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-right: 1px solid black;
+}
+
+.rewards-col:last-child {
+  border-right: none;
+}
+
+/* Tabs (Ranked Status / Ranked Rewards) */
+.tab {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #3b2a20;
+  cursor: pointer;
+  text-align: center;
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+}
+
+.tab.active {
+  border-bottom: 2px solid #3b2a20;
+  text-decoration: none;
+}
+
+.tab:hover {
+  background: #f3c64a;
+  border-bottom: 2px solid #3b2a20;
+}
+
+/* Award rank icons */
+.award-icon {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+/* Individual reward: 100x100 white box */
+.reward-box {
+  width: 100px;
+  height: 100px;
+  background: #ffffff;
+  border: 1px solid #3b2a20;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.reward-box img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.reward-box p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3b2a20;
+}

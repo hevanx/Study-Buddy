@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Friend Profile - Study Buddy</title>
+  <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
+  <link rel="stylesheet" href="styles/nav.css" />
+  <link rel="stylesheet" href="styles/friends-profile.css" />
+</head>
+
+<body class="sb">
+  <header class="sb-header">
+    <nav class="sb-topnav" aria-label="Primary">
+      <a href="index.html" class="sb-logo">Study Buddy</a>
+      <div class="sb-rank-wrap" aria-label="Rank">
+        <a href="ranked.html">
+          <img src="assets/RankLogo.png" alt="Rank badge" class="sb-rank-badge sb-rank-badge--unranked" />
+        </a>
+      </div>
+      <div class="sb-nav-links">
+        <a class="sb-nav-btn" href="leaderboard.html">Leader board</a>
+        <a class="sb-nav-btn" href="friends.html">Friends</a>
+        <a class="sb-nav-btn" href="#settings-panel">Settings</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="sb-main">
+    <div class="profile-card" id="profile-card">
+
+      <a href="friends.html" class="profile-close-btn" title="Back to Friends">
+        <img src="assets/x.png" alt="Close">
+      </a>
+
+      <!-- Loading state -->
+      <p class="fp-loading" id="fp-loading">Loading profile…</p>
+
+      <!-- Profile content (hidden until loaded) -->
+      <div class="fp-body" id="fp-body" hidden>
+        <div class="profile-avatar-wrap">
+          <img src="assets/Duck.png" alt="Duck" class="profile-pic" id="fp-duck">
+        </div>
+        <span class="profile-name" id="fp-username">—</span>
+        <div class="profile-rank-wrap">
+          <img src="assets/RankLogo.png" alt="Rank" class="profile-rank" id="fp-rank-badge">
+          <span class="profile-rank-name" id="fp-rank-name">Unranked</span>
+        </div>
+        <div class="fp-stats">
+          <div class="fp-stat">
+            <span class="fp-stat-val" id="fp-xp">0</span>
+            <span class="fp-stat-label">XP</span>
+          </div>
+          <div class="fp-stat-divider"></div>
+          <div class="fp-stat">
+            <span class="fp-stat-val" id="fp-time">0h 0m</span>
+            <span class="fp-stat-label">Study Time</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error state -->
+      <p class="fp-error" id="fp-error" hidden>Could not load profile.</p>
+
+    </div>
+  </main>
+
+  <section id="settings-panel" class="sb-settings" aria-label="Settings">
+    <div class="sb-settings-header">
+      <a href="#" class="sb-back" aria-label="Close settings">←</a>
+      <h2 class="sb-settings-title">Settings</h2>
+      <div></div>
+    </div>
+    <div class="sb-settings-content">
+      <a class="sb-settings-item" href="profile.html">Profile</a>
+      <a class="sb-settings-item" href="login.html">Log out</a>
+    </div>
+  </section>
+
+  <script src="scripts/ProgressRepository.js"></script>
+  <script src="scripts/xpSystem.js"></script>
+  <script src="scripts/main.js"></script>
+  <script>
+    /* ── Init my own nav rank badge ─────────────────────────── */
+    (async function () {
+      var myId = localStorage.getItem('sb-userId') || 'guest';
+      var xp   = new XpSystem(new ApiProgressRepository('/api'));
+      await xp.init(myId);
+    })();
+
+    /* ── Load friend profile ────────────────────────────────── */
+    (async function () {
+      var myUserId = localStorage.getItem('sb-userId');
+      if (!myUserId) { location.href = 'login.html'; return; }
+
+      var params   = new URLSearchParams(location.search);
+      var targetId = params.get('userId');
+      if (!targetId) { location.href = 'friends.html'; return; }
+
+      var loadingEl = document.getElementById('fp-loading');
+      var bodyEl    = document.getElementById('fp-body');
+      var errorEl   = document.getElementById('fp-error');
+
+      try {
+        var res  = await fetch(`/api/friends/profile/${encodeURIComponent(targetId)}`,
+                               { credentials: 'include' });
+        if (!res.ok) throw new Error('Not found');
+        var data = await res.json();
+
+        /* Username */
+        document.getElementById('fp-username').textContent = data.username;
+        document.title = data.username + ' – Study Buddy';
+
+        /* Duck image */
+        var eq = {
+          hatId:   data.cosmetics.hatId,
+          shirtId: data.cosmetics.shirtId,
+          shoesId: data.cosmetics.shoesId,
+          glassesId: null,
+        };
+        /* getDuckImage is a global from main.js */
+        document.getElementById('fp-duck').src = getDuckImage(eq);
+
+        /* Rank — getRankInfo is a global from xpSystem.js */
+        var rankInfo = getRankInfo(data.totalXp);
+        document.getElementById('fp-rank-badge').src        = rankInfo.current.img;
+        document.getElementById('fp-rank-name').textContent = rankInfo.current.name;
+
+        /* XP */
+        document.getElementById('fp-xp').textContent = Math.floor(data.totalXp) + ' XP';
+
+        /* Study time — convert seconds to h m */
+        var totalSec = Math.floor(data.totalStudySeconds);
+        var hours    = Math.floor(totalSec / 3600);
+        var mins     = Math.floor((totalSec % 3600) / 60);
+        document.getElementById('fp-time').textContent = hours + 'h ' + mins + 'm';
+
+        loadingEl.hidden = true;
+        bodyEl.hidden    = false;
+      } catch (_) {
+        loadingEl.hidden = true;
+        errorEl.hidden   = false;
+      }
+    })();
+  </script>
+</body>
+</html>
