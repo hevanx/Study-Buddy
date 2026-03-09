@@ -46,7 +46,8 @@ router.get('/:userId/timer-state', requireAuth, async (req, res) => {
 router.patch('/:userId/timer-state', requireAuth, async (req, res) => {
   if (!checkOwner(req, res)) return;
 
-  const accumulatedMs = Number(req.body?.accumulatedMs) || 0;
+  const hasMs         = req.body?.accumulatedMs !== undefined;
+  const accumulatedMs = hasMs ? Number(req.body.accumulatedMs) : 0;
   const validStates   = ['stopped', 'running', 'paused'];
   const newState      = validStates.includes(req.body?.state) ? req.body.state : 'paused';
   const userId        = req.params.userId;
@@ -62,11 +63,14 @@ router.patch('/:userId/timer-state', requireAuth, async (req, res) => {
     if (newState === 'running') {
       /* Start a new session only if we weren't already running */
       const startExpr = current.state === 'running' ? 'session_start' : 'UTC_TIMESTAMP()';
+      /* Only overwrite accumulated_ms if the client explicitly sent it.
+         startSession() sends no accumulatedMs — preserve the existing value. */
+      const accExpr = hasMs ? 'VALUES(accumulated_ms)' : 'accumulated_ms';
       await db.execute(
         `INSERT INTO timer_state (user_id, accumulated_ms, state, session_start)
          VALUES (?, ?, 'running', UTC_TIMESTAMP())
          ON DUPLICATE KEY UPDATE
-           accumulated_ms = VALUES(accumulated_ms),
+           accumulated_ms = ${accExpr},
            state          = 'running',
            session_start  = ${startExpr}`,
         [userId, accumulatedMs]

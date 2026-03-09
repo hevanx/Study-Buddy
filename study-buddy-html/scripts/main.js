@@ -192,6 +192,23 @@ function updateMascot() {
   mascotImg.src = getDuckImage(equipped);
 }
 
+/* --- Strip any equipped items the user can no longer afford --- */
+function enforceEquipRestrictions() {
+  const xp = getCurrentXp();
+  let changed = false;
+  COSMETIC_ITEMS.forEach(item => {
+    const key = CATEGORY_KEY[item.category];
+    if (equipped[key] === item.id && xp < item.requiredXp) {
+      equipped[key] = null;
+      changed = true;
+    }
+  });
+  if (changed) {
+    CosmeticStore.save(equipped);
+    updateMascot();
+  }
+}
+
 /* --- Category tab switching --- */
 catTabs.forEach(tab => {
   tab.addEventListener('click', () => {

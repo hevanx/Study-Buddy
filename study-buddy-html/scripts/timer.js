@@ -39,8 +39,8 @@ const _TIMER_STATES = Object.freeze({
 });
 
 const _DISPLAY_TICK_MS  = 250;              // refresh display 4× per second
-const _TIMER_STORAGE_KEY = 'sb-timer-state'; // localStorage key for session persistence
-                                              // TODO: swap to API call when MySQL is ready
+const _SAVE_EVERY_MS    = 15_000;           // periodic server save while running
+const _TIMER_STORAGE_KEY = 'sb-timer-state';
 
 class StudyTimer {
   /**
@@ -53,7 +53,8 @@ class StudyTimer {
     this._accumulatedMs = 0;     // ms from completed segments
     this._segmentStart  = null;  // Date.now() when current segment started
 
-    this._intervalId = null;
+    this._intervalId   = null;
+    this._lastSaveTime = 0;
 
     /* DOM elements — only present on index.html */
     this._displayEl = document.getElementById('timer-display');
@@ -64,7 +65,6 @@ class StudyTimer {
 
     this._bindEvents();
     this._load();     // restore elapsed time from previous session if any
-    this._render();   // show correct time immediately on page load
   }
 
   /* ── Public methods ─────────────────────────────────────── */
@@ -130,6 +130,15 @@ class StudyTimer {
   }
 
   _render() {
+    /* ── Periodic save while running ─────────────────────── */
+    if (this._state === _TIMER_STATES.RUNNING) {
+      const now = Date.now();
+      if (now - this._lastSaveTime >= _SAVE_EVERY_MS) {
+        this._lastSaveTime = now;
+        this._save();
+      }
+    }
+
     /* ── Timer display ───────────────────────────────────── */
     const totalS  = Math.floor(this._elapsedMs() / 1000);
     const minutes = Math.floor(totalS / 60);
@@ -207,12 +216,11 @@ class StudyTimer {
           this._segmentStart  = Date.now();
           this._startTicker();
           this._xp.startSession();
-          this._render();
         } else if (state === 'paused' && ms > 0) {
           this._accumulatedMs = ms;
           this._state = _TIMER_STATES.PAUSED;
-          this._render();
         }
+        this._render();
       })
       .catch(() => {});
   }

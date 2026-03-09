@@ -130,6 +130,10 @@
   flex-direction: column;
 }
 
+.sb-friend-panel[hidden] {
+  display: none;
+}
+
 /* ── Scrollable lists ────────────────────────────────────────── */
 .friend-list,
 .request-list {

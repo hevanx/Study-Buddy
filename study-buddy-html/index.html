@@ -179,7 +179,8 @@
           if (t._state === 'running') t._xp.endSession();
           t._accumulatedMs = equivMs;
           t._segmentStart  = null;
-          t._state         = 'stopped';
+          t._state         = equivMs > 0 ? 'paused' : 'stopped';
+          t._save();
           t._render();
         }
 
@@ -193,6 +194,7 @@
         }));
       }
 
+      if (typeof enforceEquipRestrictions === 'function') enforceEquipRestrictions();
       if (typeof renderGrid === 'function') renderGrid();
     }
   </script>

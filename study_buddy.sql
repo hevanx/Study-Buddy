@@ -58,7 +58,7 @@ CREATE TABLE `timer_state` (
 --
 
 CREATE TABLE IF NOT EXISTS users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(255) NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE `user_progress` (
 -- Sample data
 --
 
--- Users (passwords in order: password123, studyhard, diamond99, golduser, silverstar)
+-- Users (passwords in order: password123, studyhard, silverpass, bronzeboy, newuser1)
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`) VALUES
 (1, 'hevan',        'hevan@example.com',       '$2a$10$FSIGDi0YOTNQAPA2qEcz8OXQfdnIPaGbW1eYZTsjsCHysZ4/S8SpC', '2026-01-15 09:00:00'),
 (2, 'alex_studies', 'alex@example.com',        '$2a$10$w6cI8T0EUzwwBckveNP7uuknTFoXBRTPHDuGxZ1uDdTAjE9lePJje', '2026-01-20 14:30:00'),
@@ -107,29 +107,30 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`) VALUES
 (4, 'goldie',       'goldie@example.com',      '$2a$10$SBUG70B1I2u5BGDbnmVMGu3JiC.LZOikocPiS5emZgbhIKZ63F7oe', '2026-02-10 16:45:00'),
 (5, 'silverstar',   'silverstar@example.com',  '$2a$10$V3IwuDW61UXaUbYmsk7WPek4gHU4j7UAb4k3KJtiN.m/2v.A6QtX6', '2026-02-20 08:00:00');
 
--- XP progress (100 XP = 1 hour = 3600 study seconds)
+-- XP progress — one user per rank (Diamond/Gold/Silver/Bronze/Unranked)
 INSERT INTO `user_progress` (`id`, `user_id`, `total_xp`, `total_study_seconds`, `last_updated_at`) VALUES
-(1, 1, 1050.0000, 37800.000, '2026-03-01 18:00:00'),  -- Diamond
-(2, 2,  750.0000, 27000.000, '2026-02-28 20:00:00'),  -- Gold
-(3, 3, 1200.0000, 43200.000, '2026-03-02 09:30:00'),  -- Diamond
-(4, 4,  620.0000, 22320.000, '2026-02-27 15:00:00'),  -- Gold
-(5, 5,  380.0000, 13680.000, '2026-02-25 12:00:00');  -- Silver
+(1, 1, 1100.0000, 39600.000, '2026-03-01 18:00:00'),  -- Diamond  (1000+ XP, 11h)
+(2, 2,  700.0000, 25200.000, '2026-02-28 20:00:00'),  -- Gold     (600+ XP,  7h)
+(3, 3,  400.0000, 14400.000, '2026-03-02 09:30:00'),  -- Silver   (300+ XP,  4h)
+(4, 4,  150.0000,  5400.000, '2026-02-27 15:00:00'),  -- Bronze   (100+ XP,  1.5h)
+(5, 5,   50.0000,  1800.000, '2026-02-25 12:00:00');  -- Unranked (<100 XP,  0.5h)
 
--- Equipped cosmetics (hat_id holds hat/crown/glasses — mutually exclusive)
+-- Equipped cosmetics — only items the user's rank has unlocked
+-- Unlocks: glasses-1 @ Bronze, shoes-1 @ Silver, hat-1 & shirt-1 @ Gold, crown-1 @ Diamond
 INSERT INTO `user_cosmetics` (`id`, `user_id`, `hat_id`, `glasses_id`, `shirt_id`, `shoes_id`, `updated_at`) VALUES
-(1, 1, 'crown-1',   NULL, 'shirt-1', 'shoes-1', '2026-03-01 18:00:00'),  -- crown + shirt + shoes
-(2, 2, 'hat-1',     NULL, 'shirt-1', NULL,       '2026-02-28 20:00:00'),  -- hat + shirt
-(3, 3, 'crown-1',   NULL, NULL,      'shoes-1',  '2026-03-02 09:30:00'),  -- crown + shoes
-(4, 4, 'hat-1',     NULL, NULL,      NULL,       '2026-02-27 15:00:00'),  -- hat only
-(5, 5, 'glasses-1', NULL, NULL,      'shoes-1',  '2026-02-25 12:00:00'); -- glasses + shoes
+(1, 1, 'crown-1',   NULL, 'shirt-1', 'shoes-1', '2026-03-01 18:00:00'),  -- Diamond: crown + shirt + shoes
+(2, 2, 'hat-1',     NULL, 'shirt-1', 'shoes-1', '2026-02-28 20:00:00'),  -- Gold: hat + shirt + shoes
+(3, 3, 'glasses-1', NULL, NULL,      'shoes-1', '2026-03-02 09:30:00'),  -- Silver: glasses + shoes
+(4, 4, 'glasses-1', NULL, NULL,      NULL,      '2026-02-27 15:00:00'),  -- Bronze: glasses only
+(5, 5, NULL,        NULL, NULL,      NULL,      '2026-02-25 12:00:00');  -- Unranked: nothing
 
 -- Timer state (accumulated_ms matches study seconds × 1000)
 INSERT INTO `timer_state` (`id`, `user_id`, `accumulated_ms`, `state`, `saved_at`) VALUES
-(1, 1, 37800000, 'stopped', '2026-03-01 18:00:00'),
-(2, 2, 27000000, 'stopped', '2026-02-28 20:00:00'),
-(3, 3, 43200000, 'stopped', '2026-03-02 09:30:00'),
-(4, 4, 22320000, 'stopped', '2026-02-27 15:00:00'),
-(5, 5, 13680000, 'stopped', '2026-02-25 12:00:00');
+(1, 1, 39600000, 'stopped', '2026-03-01 18:00:00'),
+(2, 2, 25200000, 'stopped', '2026-02-28 20:00:00'),
+(3, 3, 14400000, 'stopped', '2026-03-02 09:30:00'),
+(4, 4,  5400000, 'stopped', '2026-02-27 15:00:00'),
+(5, 5,  1800000, 'stopped', '2026-02-25 12:00:00');
 
 -- Friendships
 INSERT INTO `friendships` (`id`, `sender_id`, `receiver_id`, `status`, `created_at`, `updated_at`) VALUES
