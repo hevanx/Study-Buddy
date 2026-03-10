@@ -64,6 +64,13 @@ CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(255) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+-- Sessions table
+CREATE TABLE `sessions` (
+  `session_id` varchar(128) NOT NULL,
+  `expires` int(11) UNSIGNED NOT NULL,
+  `data` mediumtext DEFAULT NULL,
+  PRIMARY KEY (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
