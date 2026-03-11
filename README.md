@@ -50,6 +50,8 @@ http://localhost:8081
 
 You should see the Study Buddy register page.
 
+Create your own account with a username, email, and password. (you can use a fake email if you want)
+
 ---
 
 ## Sample Accounts
