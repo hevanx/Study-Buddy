@@ -1,0 +1,2068 @@
+
+╭─── Claude Code v2.1.63 ──────────────────────────────────────────────────────╮
+│                                                    │ Tips for getting        │
+│                 Welcome back Ethan!                │ started                 │
+│                                                    │ Run /init to create a … │
+│                       ▐▛███▜▌                      │ ─────────────────────── │
+│                      ▝▜█████▛▘                     │ Recent activity         │
+│                        ▘▘ ▝▝                       │ 1d ago  i need you to … │
+│                                                    │ 1w ago  i need you to … │
+│  Sonnet 4.6 · Claude Pro · egreenfld@gmail.com's   │ 1w ago  this will all … │
+│  Organization                                      │ /resume for more        │
+│              ~\.local\bin\study-buddy              │                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+✻ Conversation compacted (ctrl+o for history)
+
+  ⎿  Read study-buddy-html\scripts\timer.js (246 lines)
+  ⎿  Read study-buddy-html\scripts\main.js (238 lines)
+  ⎿  Read study-buddy-html\scripts\xpSystem.js (306 lines)
+  ⎿  Read server\routes\progress.js (80 lines)
+  ⎿  Read server\routes\timer.js (110 lines)
+
+● Bash(cd /c/Users/hevan/.local/bin/study-buddy && git status)
+  ⎿  On branch main
+     Your branch is up to date with 'origin/main'.
+     … +14 lines (ctrl+o to expand)
+
+● Bash(cd /c/Users/hevan/.local/bin/study-buddy && git add
+      study-buddy-html/scripts/main.js study-buddy-html/scripts/timer.js && git
+      commit -m "$(cat <<'EOF'
+      Remove lo…)
+  ⎿  [main cc4e359] Remove localStorage fallbacks — all persistence through
+      MySQL API
+      2 files changed, 7 insertions(+), 51 deletions(-)
+     … +4 lines (ctrl+o to expand)
+
+● Pushed as commit cc4e359. All data (cosmetics, timer state, XP) now
+  exclusively uses the MySQL API — no localStorage fallbacks remain.
+
+✻ Baked for 4m 36s
+
+> You are my senior full stack engineer. You are working inside an existing 
+   “Timer Study Buddy” website that already has user accounts, profiles, a  
+  leaderboard, and a MySQL database with tables for users and progress.     
+                                                                            
+  Task: Implement the complete Friends system end to end. It MUST work in   
+  the UI and in the database.                                               
+                                                                            
+  Hard requirements:                                                        
+  1) Users can search for other users by username (partial match) and view  
+  results.                                                                  
+  2) Users can send a friend request to a user from search results or from  
+  that user’s profile page.                                                 
+  3) The receiver can view incoming friend requests and can Accept or       
+  Decline.                                                                  
+  4) The sender can view outgoing pending requests and can Cancel.          
+  5) Once accepted, both users appear in each other’s friends list.         
+  6) Clicking a friend opens that friend’s public profile page that shows   
+  ALL the same info as the user sees on their own profile (except private   
+  fields like email). This includes total XP, total study time, level,      
+  streak if it exists, recent sessions if it exists.                        
+  7) Friends must appear on the leaderboard (same query as the existing     
+  leaderboard). If the leaderboard already includes all users, do not       
+  change it. If it is friends-only, ensure accepted friends appear.         
+  8) The system MUST use the existing MySQL tables already created for      
+  friends. Do NOT invent a totally different schema. First inspect the      
+  database schema and show it back to me. If the current friends tables are 
+   missing something required, propose the smallest possible alteration and 
+   explain why before writing migration SQL.                                
+  9) Protect endpoints: Only logged-in users can search, send requests,     
+  accept/decline/cancel, and view friend profiles.                          
+  10) Prevent abuse/bugs: no duplicate requests, no requesting yourself, no 
+   sending a request if already friends, handle crossed requests (A         
+  requests B while B requests A) by auto-accepting or prompting to accept.  
+  11) Use prepared statements everywhere. No SQL injection risk.            
+  12) Provide code changes as a clear patch plan: list each file you will   
+  create or modify and include the full code for each. Keep it consistent   
+  with the existing code style.                                             
+                                                                            
+  Deliverables:                                                             
+  A) Database: show the existing friends-related table definitions (SHOW    
+  CREATE TABLE output style). Then confirm whether it already supports the  
+  requirements. If not, provide minimal ALTER TABLE statements.             
+  B) Backend: PHP endpoints (or existing API structure) to support:         
+     - search users                                                         
+     - send friend request                                                  
+     - list incoming requests                                               
+     - list outgoing requests                                               
+     - accept request                                                       
+     - decline request                                                      
+     - cancel outgoing request                                              
+     - list friends                                                         
+     - fetch friend profile by user_id/username with the same stats as my   
+  profile endpoint uses                                                     
+  C) Frontend: UI components/pages:                                         
+     - Friends page with tabs: Friends, Incoming Requests, Outgoing         
+  Requests, Find Friends (search)                                           
+     - Friend profile page                                                  
+     - Buttons and states (disabled, loading, error messages)               
+  D) Queries:                                                               
+     - Provide the SQL queries used for each operation.                     
+     - For profile stats and leaderboard, reuse the existing                
+  profile/leaderboard aggregation logic. If needed, refactor into shared    
+  functions so my profile and friend profile stay identical.                
+  E) Testing checklist:                                                     
+     - Include step-by-step manual tests for every edge case.               
+                                                                            
+  Before writing final code, ask me only for:                               
+  1) The exact names of the existing friends-related tables and their       
+  columns (or tell me how you will extract them).                           
+  2) The existing file structure or the key files for profile + leaderboard 
+   so you can reuse the same logic.                                         
+                                                                            
+  Then proceed to implementation.(try to keep the same layout as the styles 
+   i have now for each page. but if you need to change certain things like  
+  adding something new to fit the deliverables, you can)                    
+
+● Explore(Explore study-buddy codebase structure)
+  ⎿  Done (39 tool uses · 75.1k tokens · 1m 16s)
+  (ctrl+o to expand)
+
+● Good — I have everything I need. Let me now read the key files directly before
+   writing a single line of code.
+
+● Searched for 1 pattern, read 12 files (ctrl+o to expand)
+  ⎿  API Error: Claude's response exceeded the 32000 output token maximum. To 
+     configure this behavior, set the CLAUDE_CODE_MAX_OUTPUT_TOKENS environment 
+     variable.
+
+● Now I have everything I need. Here's the full plan and implementation, broken
+  into parts.
+
+  ---
+  A) Schema Analysis
+
+  The existing friendships table:
+
+  friendships
+    id           INT UNSIGNED PK AUTO_INCREMENT
+    sender_id    INT UNSIGNED  → FK users.id CASCADE DELETE
+    receiver_id  INT UNSIGNED  → FK users.id CASCADE DELETE
+    status       ENUM('pending','accepted','declined')  DEFAULT 'pending'
+    created_at   DATETIME  DEFAULT current_timestamp()
+    updated_at   DATETIME  ON UPDATE current_timestamp()
+    UNIQUE KEY uq_friendship (sender_id, receiver_id)
+    KEY fk_friendship_receiver (receiver_id)          ← already indexed ✓
+
+  Assessment — all requirements are met with one behavioural fix:
+  The declined status creates a dead-end row that blocks re-sending. Fix: on 
+  decline, delete the row rather than setting status='declined'. This keeps the
+  table clean and lets the sender try again later. The declined enum value can
+  stay — we just won't use it.
+
+  No ALTER TABLE is needed. The schema is complete.
+
+  ---
+  B) Backend — Part 1 of 3
+
+  File: server/routes/friends.js (new file)
+
+● Write(server\routes\friends.js)
+  ⎿  Wrote 315 lines to server\routes\friends.js
+       1 'use strict';
+       2 
+       3 const express     = require('express');
+       4 const { db }      = require('../db');
+       5 const requireAuth = require('../middleware/requireAuth');
+       6 const router      = express.Router();
+       7 
+       8 router.use(requireAuth);
+       9 
+      10 const myId = req => Number(req.session.userId);
+     … +305 lines (ctrl+o to expand)
+
+● Now mount it in the main server:
+
+● Update(server\index.js)
+  ⎿  Added 1 line
+       9  const progressRouter = require('./routes/progress');
+      10  const cosmeticsRouter = require('./routes/cosmetics');
+      11  const timerRouter    = require('./routes/timer');
+      12 +const friendsRouter  = require('./routes/friends');            
+      13  
+      14  const app  = express();
+      15  const PORT = process.env.PORT || 3000;
+
+● Update(server\index.js)
+  ⎿  Added 5 lines, removed 4 lines
+      38  }));
+      39  
+      40  /* ── Routes ──────────────────────────────────────────────────
+          ─ */
+      41 -app.use('/api/auth',  authRouter);                             
+      42 -app.use('/api/users', progressRouter);                         
+      43 -app.use('/api/users', cosmeticsRouter);                        
+      44 -app.use('/api/users', timerRouter);                            
+      41 +app.use('/api/auth',    authRouter);                           
+      42 +app.use('/api/users',  progressRouter);                        
+      43 +app.use('/api/users',  cosmeticsRouter);                       
+      44 +app.use('/api/users',  timerRouter);                           
+      45 +app.use('/api/friends', friendsRouter);                        
+      46  
+      47  /* ── Leaderboard ─────────────────────────────────────────────
+          ── */
+      48  /* GET /api/leaderboard?filter=friends — future: pass filter=fr
+          iends to limit to friends only */
+
+● Backend done. Now Part 2 — the consolidated Friends page (HTML + JS):
+
+● Write(study-buddy-html\scripts\friends.js)
+  ⎿  Wrote 346 lines to study-buddy-html\scripts\friends.js
+       1 'use strict';
+       2 
+       3 /* =============================================================
+       4    FRIENDS PAGE CONTROLLER
+       5    Manages four tabs: Friends | Requests | Sent | Find Friends
+       6    All API calls use credentials:'include' for session cookies.
+       7    =============================================================
+          */
+       8 
+       9 (async function () {
+      10   /* ── Auth guard ──────────────────────────────────────────── 
+         */
+     … +336 lines (ctrl+o to expand)
+
+● Now rewrite friends.html with the four-tab layout:
+
+● Write(study-buddy-html\friends.html)
+  ⎿  Added 56 lines, removed 21 lines
+      25    </header>
+      26  
+      27    <main class="sb-main">
+      28 -<div class="friends-container">                                
+      29 -<div class="top">                                              
+      30 -<h1>Friends</h1>                                               
+      31 -<button class="add-friend-btn" onclick="location.href='friends-
+         -search.html'"><img src="assets/search.png" alt="Add Friend"></b
+         -utton>                                                         
+      32 -</div><!--top closes-->                                        
+      33 -<div class="friend-list">                                      
+      34 -  <div class="friend-item" onclick="location.href='friends-prof
+         -ile.html'">                                                    
+      35 -    <img src="assets/person.png" alt="Friend 1" class="friend-a
+         -vatar">                                                        
+      36 -    <span class="friend-name">PersonOne1</span>                
+      37 -  </div>                                                       
+      38 -  <div class="friend-item">                                    
+      39 -    <img src="assets/person.png" alt="Friend 2" class="friend-a
+         -vatar">                                                        
+      40 -    <span class="friend-name">PersonTwo2</span>                
+      41 -  </div>                                                       
+      42 -  <!-- Add more friend items as needed -->                     
+      43 -</div> <!-- friend-list closes -->                             
+      44 -<div class="friend-request">                                   
+      45 -<button class="friend-request-btn" onclick="location.href='frie
+         -nds-request.html'">Friend Request</button>                     
+      46 -</div>                                                         
+      28 +    <div class="friends-container">                            
+      29  
+      48 -</div> <!-- friends-container -->                              
+      49 -                                                               
+      30 +      <!-- Top bar -->                                         
+      31 +      <div class="top">                                        
+      32 +        <h1>Friends</h1>                                       
+      33 +        <button class="add-friend-btn" id="top-search-btn" titl
+         +e="Find friends">                                              
+      34 +          <img src="assets/search.png" alt="Find Friends">     
+      35 +        </button>                                              
+      36 +      </div>                                                   
+      37 +                                                               
+      38 +      <!-- Tab strip -->                                       
+      39 +      <div class="sb-friend-tabs" role="tablist">              
+      40 +        <button id="tab-friends"  class="sb-friend-tab" role="t
+         +ab" aria-selected="false">Friends</button>                     
+      41 +        <button id="tab-requests" class="sb-friend-tab" role="t
+         +ab" aria-selected="false">                                     
+      42 +          Requests <span id="badge-requests" class="sb-badge" h
+         +idden></span>                                                  
+      43 +        </button>                                              
+      44 +        <button id="tab-sent"     class="sb-friend-tab" role="t
+         +ab" aria-selected="false">                                     
+      45 +          Sent <span id="badge-sent" class="sb-badge" hidden></
+         +span>                                                          
+      46 +        </button>                                              
+      47 +        <button id="tab-search"   class="sb-friend-tab" role="t
+         +ab" aria-selected="false">Find Friends</button>                
+      48 +      </div>                                                   
+      49 +                                                               
+      50 +      <!-- Panel: Friends -->                                  
+      51 +      <div id="panel-friends" class="sb-friend-panel" hidden>  
+      52 +        <div class="friend-list" id="friends-list">            
+      53 +          <p class="sb-friend-loading">Loading…</p>            
+      54 +        </div>                                                 
+      55 +      </div>                                                   
+      56 +                                                               
+      57 +      <!-- Panel: Incoming Requests -->                        
+      58 +      <div id="panel-requests" class="sb-friend-panel" hidden> 
+      59 +        <div class="request-list" id="incoming-list">          
+      60 +          <p class="sb-friend-loading">Loading…</p>            
+      61 +        </div>                                                 
+      62 +      </div>                                                   
+      63 +                                                               
+      64 +      <!-- Panel: Sent / Outgoing -->                          
+      65 +      <div id="panel-sent" class="sb-friend-panel" hidden>     
+      66 +        <div class="request-list" id="outgoing-list">          
+      67 +          <p class="sb-friend-loading">Loading…</p>            
+      68 +        </div>                                                 
+      69 +      </div>                                                   
+      70 +                                                               
+      71 +      <!-- Panel: Find Friends (search) -->                    
+      72 +      <div id="panel-search" class="sb-friend-panel" hidden>   
+      73 +        <div class="sb-search-bar">                            
+      74 +          <input id="friend-search-input"                      
+      75 +                 type="text"                                   
+      76 +                 placeholder="Search by username…"             
+      77 +                 autocomplete="off" />                         
+      78 +          <button id="friend-search-btn" class="friend-request-
+         +btn">Search</button>                                           
+      79 +        </div>                                                 
+      80 +        <div class="request-list" id="search-list"></div>      
+      81 +      </div>                                                   
+      82 +                                                               
+      83 +    </div><!-- /.friends-container -->                         
+      84    </main>
+      85  
+      86    <section id="settings-panel" class="sb-settings" aria-label="
+          Settings">
+     ...
+      105        await xp.init(userId);
+      106      })();
+      107    </script>
+      108 +  <script src="scripts/friends.js"></script>                  
+      109  </body>
+      110  </html>
+
+● Now update friends.css to add tab + badge styles while keeping all existing
+  styles:
+
+● Write(study-buddy-html\styles\friends.css)
+  ⎿  Added 197 lines, removed 9 lines
+      15    flex-direction: column;
+      16  }
+      17  
+      18 -/* Top bar */                                                  
+      18 +/* ── Top bar ─────────────────────────────────────────────────
+         +─ */                                                           
+      19  .top {
+      20    display: flex;
+      21    align-items: center;
+     ...
+       44    display: flex;
+       45    align-items: center;
+       46    justify-content: center;
+       47 +  border-radius: 8px;                                         
+       48  }
+       49  
+       50 +.add-friend-btn:hover {                                       
+       51 +  background: rgba(0, 0, 0, 0.06);                            
+       52 +}                                                             
+       53 +                                                              
+       54  .add-friend-btn img {
+       55    width: 30px;
+       56    height: 30px;
+       57    object-fit: contain;
+       58  }
+       59  
+       55 -/* Friend list */                                             
+       56 -.friend-list {                                                
+       60 +/* ── Tab strip ──────────────────────────────────────────────
+          +── */                                                         
+       61 +.sb-friend-tabs {                                             
+       62    display: flex;
+       63 +  gap: 4px;                                                   
+       64 +  padding: 10px 16px 0;                                       
+       65 +  background: #e8d5a3;                                        
+       66 +  border-bottom: 2px solid #3b2a20;                           
+       67 +}                                                             
+       68 +                                                              
+       69 +.sb-friend-tab {                                              
+       70 +  position: relative;                                         
+       71 +  font-family: 'Inter', sans-serif;                           
+       72 +  font-size: 14px;                                            
+       73 +  font-weight: 700;                                           
+       74 +  color: #5a3a26;                                             
+       75 +  background: #f5e6a8;                                        
+       76 +  border: 2px solid transparent;                              
+       77 +  border-bottom: none;                                        
+       78 +  border-radius: 8px 8px 0 0;                                 
+       79 +  padding: 8px 18px;                                          
+       80 +  cursor: pointer;                                            
+       81 +  transition: background 0.12s;                               
+       82 +}                                                             
+       83 +                                                              
+       84 +.sb-friend-tab:hover {                                        
+       85 +  background: #f0dc8e;                                        
+       86 +}                                                             
+       87 +                                                              
+       88 +.sb-friend-tab--active {                                      
+       89 +  background: #fef3cf;                                        
+       90 +  border-color: #3b2a20;                                      
+       91 +  color: #3b2a20;                                             
+       92 +  /* sits on top of the container border */                   
+       93 +  margin-bottom: -2px;                                        
+       94 +}                                                             
+       95 +                                                              
+       96 +/* ── Badge (request count) ──────────────────────────────────
+          +── */                                                         
+       97 +.sb-badge {                                                   
+       98 +  display: inline-flex;                                       
+       99 +  align-items: center;                                        
+      100 +  justify-content: center;                                    
+      101 +  min-width: 18px;                                            
+      102 +  height: 18px;                                               
+      103 +  padding: 0 5px;                                             
+      104 +  background: #e05c2a;                                        
+      105 +  color: #fff;                                                
+      106 +  border-radius: 99px;                                        
+      107 +  font-size: 11px;                                            
+      108 +  font-weight: 800;                                           
+      109 +  margin-left: 6px;                                           
+      110 +  vertical-align: middle;                                     
+      111 +}                                                             
+      112 +                                                              
+      113 +/* ── Tab panels ─────────────────────────────────────────────
+          +── */                                                         
+      114 +.sb-friend-panel {                                            
+      115 +  display: flex;                                              
+      116    flex-direction: column;
+      117 +  min-height: 200px;                                          
+      118 +}                                                             
+      119 +                                                              
+      120 +/* ── Friend / request lists ─────────────────────────────────
+          +── */                                                         
+      121 +.friend-list,                                                 
+      122 +.request-list {                                               
+      123 +  display: flex;                                              
+      124 +  flex-direction: column;                                     
+      125    gap: 12px;
+      126    padding: 16px;
+       61 -  max-height: clamp(300px, 50vh, 520px);                      
+      127 +  max-height: clamp(300px, 52vh, 540px);                      
+      128    overflow-y: auto;
+      129  }
+      130  
+       65 -/* Individual friend item - slightly darker yellow */         
+      131 +.sb-friend-loading,                                           
+      132 +.sb-friend-empty {                                            
+      133 +  font-family: 'Inter', sans-serif;                           
+      134 +  font-size: 15px;                                            
+      135 +  color: #7a5c3a;                                             
+      136 +  padding: 12px 0;                                            
+      137 +  text-align: center;                                         
+      138 +}                                                             
+      139 +                                                              
+      140 +/* ── Individual friend item ─────────────────────────────────
+          +── */                                                         
+      141  .friend-item {
+      142    display: flex;
+      143    align-items: center;
+     ...
+      146    background: #f5e6a8;
+      147    border-radius: 12px;
+      148    cursor: pointer;
+      149 +  transition: background 0.1s;                                
+      150  }
+      151  
+      152  .friend-item:hover {
+      153    background: #f0dc8e;
+      154  }
+      155  
+      156 +/* ── Request item ───────────────────────────────────────────
+          +── */                                                         
+      157 +.request-item {                                               
+      158 +  display: flex;                                              
+      159 +  align-items: center;                                        
+      160 +  gap: 14px;                                                  
+      161 +  padding: 14px 18px;                                         
+      162 +  background: #f5e6a8;                                        
+      163 +  border-radius: 12px;                                        
+      164 +}                                                             
+      165 +                                                              
+      166 +/* ── Shared avatar / name ───────────────────────────────────
+          +── */                                                         
+      167  .friend-avatar {
+      168    width: 46px;
+      169    height: 46px;
+      170    border-radius: 50%;
+      171    object-fit: cover;
+      172 +  flex-shrink: 0;                                             
+      173  }
+      174  
+      175  .friend-name {
+     ...
+      177    font-size: 20px;
+      178    font-weight: 600;
+      179    color: #3b2a20;
+      180 +  flex: 1;                                                    
+      181 +  min-width: 0;                                               
+      182 +  overflow: hidden;                                           
+      183 +  text-overflow: ellipsis;                                    
+      184 +  white-space: nowrap;                                        
+      185  }
+      186  
+       94 -/* Friend request button - bottom left, nav button style */   
+       95 -.friend-request {                                             
+       96 -  padding: 12px 20px;                                         
+      187 +/* ── Action button group ────────────────────────────────────
+          +── */                                                         
+      188 +.request-actions {                                            
+      189 +  display: flex;                                              
+      190 +  gap: 8px;                                                   
+      191 +  align-items: center;                                        
+      192 +  flex-shrink: 0;                                             
+      193  }
+      194  
+      195 +.action-btn {                                                 
+      196 +  width: 42px;                                                
+      197 +  height: 42px;                                               
+      198 +  border: none;                                               
+      199 +  background: none;                                           
+      200 +  cursor: pointer;                                            
+      201 +  border-radius: 10px;                                        
+      202 +  display: flex;                                              
+      203 +  align-items: center;                                        
+      204 +  justify-content: center;                                    
+      205 +  transition: background 0.1s;                                
+      206 +}                                                             
+      207 +                                                              
+      208 +.action-btn img {                                             
+      209 +  width: 28px;                                                
+      210 +  height: 28px;                                               
+      211 +  object-fit: contain;                                        
+      212 +}                                                             
+      213 +                                                              
+      214 +.action-btn:hover {                                           
+      215 +  background: rgba(0, 0, 0, 0.07);                            
+      216 +}                                                             
+      217 +                                                              
+      218 +.action-btn:disabled {                                        
+      219 +  opacity: 0.4;                                               
+      220 +  cursor: not-allowed;                                        
+      221 +}                                                             
+      222 +                                                              
+      223 +/* ── Relationship tag (search results) ──────────────────────
+          +── */                                                         
+      224 +.sb-rel-tag {                                                 
+      225 +  font-family: 'Inter', sans-serif;                           
+      226 +  font-size: 13px;                                            
+      227 +  font-weight: 700;                                           
+      228 +  color: #5a3a26;                                             
+      229 +  background: #e8d5a3;                                        
+      230 +  border-radius: 8px;                                         
+      231 +  padding: 4px 10px;                                          
+      232 +}                                                             
+      233 +                                                              
+      234 +/* ── Add Friend button (search results) ─────────────────────
+          +── */                                                         
+      235 +.sb-add-btn {                                                 
+      236 +  font-family: 'Inter', sans-serif;                           
+      237 +  font-size: 14px;                                            
+      238 +  font-weight: 700;                                           
+      239 +  color: #5a3a26;                                             
+      240 +  background: #f3c64a;                                        
+      241 +  border: 2px solid rgba(0, 0, 0, 0.12);                      
+      242 +  border-radius: 10px;                                        
+      243 +  padding: 8px 16px;                                          
+      244 +  cursor: pointer;                                            
+      245 +  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);                    
+      246 +  transition: background 0.1s, transform 0.1s;                
+      247 +}                                                             
+      248 +                                                              
+      249 +.sb-add-btn:hover   { background: #f0b830; }                  
+      250 +.sb-add-btn:active  { transform: translateY(1px); box-shadow: 
+          +0 2px 0 rgba(0,0,0,.15); }                                    
+      251 +.sb-add-btn:disabled { opacity: 0.5; cursor: not-allowed; }   
+      252 +.sb-sent-btn        { background: #c5e8a0 !important; }       
+      253 +                                                              
+      254 +/* ── Row error message ──────────────────────────────────────
+          +── */                                                         
+      255 +.sb-row-err {                                                 
+      256 +  font-family: 'Inter', sans-serif;                           
+      257 +  font-size: 12px;                                            
+      258 +  color: #c0392b;                                             
+      259 +  padding: 0 4px;                                             
+      260 +}                                                             
+      261 +                                                              
+      262 +/* ── Search bar ─────────────────────────────────────────────
+          +── */                                                         
+      263 +.sb-search-bar {                                              
+      264 +  display: flex;                                              
+      265 +  gap: 10px;                                                  
+      266 +  padding: 16px 16px 8px;                                     
+      267 +}                                                             
+      268 +                                                              
+      269 +.sb-search-bar input {                                        
+      270 +  flex: 1;                                                    
+      271 +  font-family: 'Inter', sans-serif;                           
+      272 +  font-size: 15px;                                            
+      273 +  padding: 10px 14px;                                         
+      274 +  border: 2px solid #c9ad7a;                                  
+      275 +  border-radius: 10px;                                        
+      276 +  background: #fff9ec;                                        
+      277 +  color: #3b2a20;                                             
+      278 +  outline: none;                                              
+      279 +}                                                             
+      280 +                                                              
+      281 +.sb-search-bar input:focus {                                  
+      282 +  border-color: #3b2a20;                                      
+      283 +}                                                             
+      284 +                                                              
+      285 +/* ── Existing request / search button style ─────────────────
+          +── */                                                         
+      286  .friend-request-btn {
+      287    text-decoration: none;
+      288    color: #5a3a26;
+     ...
+      291    border-radius: 12px;
+      292    font-family: 'Inter', sans-serif;
+      293    font-weight: 700;
+      107 -  font-size: 16px;                                            
+      294 +  font-size: 15px;                                            
+      295    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.18);
+      296    border: 2px solid rgba(0, 0, 0, 0.12);
+      297    cursor: pointer;
+      298 +  white-space: nowrap;                                        
+      299  }
+      300  
+      301  .friend-request-btn:active {
+
+● Now Part 3 — Friend profile page. Rewrite friends-profile.html to load
+  dynamically from ?userId=:
+
+● Write(study-buddy-html\friends-profile.html)
+  ⎿  Added 102 lines, removed 29 lines
+      14      <nav class="sb-topnav" aria-label="Primary">
+      15        <a href="index.html" class="sb-logo">Study Buddy</a>
+      16        <div class="sb-rank-wrap" aria-label="Rank">
+      17 -        <a href="ranked.html"><img src="assets/RankLogo.png" al
+         -t="Rank badge" class="sb-rank-badge sb-rank-badge--unranked" />
+         -</a>                                                           
+      17 +        <a href="ranked.html">                                 
+      18 +          <img src="assets/RankLogo.png" alt="Rank badge" class
+         +="sb-rank-badge sb-rank-badge--unranked" />                    
+      19 +        </a>                                                   
+      20        </div>
+      21        <div class="sb-nav-links">
+      22          <a class="sb-nav-btn" href="leaderboard.html">Leader bo
+          ard</a>
+     ...
+      27    </header>
+      28  
+      29    <main class="sb-main">
+      28 -<div class="friends-container">                                
+      29 -  <div class="top">                                            
+      30 -    <h1>Friends</h1>                                           
+      31 -    <button class="add-friend-btn" onclick="location.href='frie
+         -nds-search.html'"><img src="assets/search.png" alt="Add Friend"
+         -></button>                                                     
+      32 -  </div>                                                       
+      33 -  <div class="friend-list">                                    
+      34 -    <div class="friend-item">                                  
+      35 -      <img src="assets/person.png" alt="Friend 1" class="friend
+         --avatar">                                                      
+      36 -      <span class="friend-name">PersonOne1</span>              
+      37 -    </div>                                                     
+      38 -    <div class="friend-item">                                  
+      39 -      <img src="assets/person.png" alt="Friend 2" class="friend
+         --avatar">                                                      
+      40 -      <span class="friend-name">PersonTwo2</span>              
+      41 -    </div>                                                     
+      42 -  </div>                                                       
+      43 -  <div class="friend-request">                                 
+      44 -    <button class="friend-request-btn" onclick="location.href='
+         -friends-request.html'">Friend Request</button>                 
+      45 -  </div>                                                       
+      46 -</div>                                                         
+      30 +    <div class="profile-card" id="profile-card">               
+      31  
+      48 -<div class="profile-overlay">                                  
+      49 -  <div class="profile-card">                                   
+      50 -    <a href="friends.html" class="profile-close-btn"><img src="
+         -assets/x.png" alt="Close"></a>                                 
+      51 -    <div class="profile-avatar-wrap">                          
+      52 -      <img src="assets/DuckGlasses.png" alt="PersonOne1" class=
+         -"profile-pic">                                                 
+      32 +      <a href="friends.html" class="profile-close-btn" title="B
+         +ack to Friends">                                               
+      33 +        <img src="assets/x.png" alt="Close">                   
+      34 +      </a>                                                     
+      35 +                                                               
+      36 +      <!-- Loading state -->                                   
+      37 +      <p class="fp-loading" id="fp-loading">Loading profile…</p
+         +>                                                              
+      38 +                                                               
+      39 +      <!-- Profile content (hidden until loaded) -->           
+      40 +      <div class="fp-body" id="fp-body" hidden>                
+      41 +        <div class="profile-avatar-wrap">                      
+      42 +          <img src="assets/Duck.png" alt="Duck" class="profile-
+         +pic" id="fp-duck">                                             
+      43 +        </div>                                                 
+      44 +        <span class="profile-name" id="fp-username">—</span>   
+      45 +        <div class="profile-rank-wrap">                        
+      46 +          <img src="assets/RankLogo.png" alt="Rank" class="prof
+         +ile-rank" id="fp-rank-badge">                                  
+      47 +          <span class="profile-rank-name" id="fp-rank-name">Unr
+         +anked</span>                                                   
+      48 +        </div>                                                 
+      49 +        <div class="fp-stats">                                 
+      50 +          <div class="fp-stat">                                
+      51 +            <span class="fp-stat-val" id="fp-xp">0</span>      
+      52 +            <span class="fp-stat-label">XP</span>              
+      53 +          </div>                                               
+      54 +          <div class="fp-stat-divider"></div>                  
+      55 +          <div class="fp-stat">                                
+      56 +            <span class="fp-stat-val" id="fp-time">0h 0m</span>
+      57 +            <span class="fp-stat-label">Study Time</span>      
+      58 +          </div>                                               
+      59 +        </div>                                                 
+      60 +      </div>                                                   
+      61 +                                                               
+      62 +      <!-- Error state -->                                     
+      63 +      <p class="fp-error" id="fp-error" hidden>Could not load p
+         +rofile.</p>                                                    
+      64 +                                                               
+      65      </div>
+      54 -    <span class="profile-name">PersonOne1</span>               
+      55 -    <img src="assets/BronzeAward.png" alt="Rank" class="profile
+         --rank">                                                        
+      56 -  </div>                                                       
+      57 -</div>                                                         
+      66    </main>
+      67  
+      68    <section id="settings-panel" class="sb-settings" aria-label="
+          Settings">
+     ...
+       77      </div>
+       78    </section>
+       79  
+       80 +  <script src="scripts/ProgressRepository.js"></script>       
+       81 +  <script src="scripts/xpSystem.js"></script>                 
+       82    <script src="scripts/main.js"></script>
+       83 +  <script>                                                    
+       84 +    /* ── Init my own nav rank badge ─────────────────────────
+          +── */                                                         
+       85 +    (async function () {                                      
+       86 +      var myId = localStorage.getItem('sb-userId') || 'guest';
+       87 +      var xp   = new XpSystem(new ApiProgressRepository('/api'
+          +));                                                           
+       88 +      await xp.init(myId);                                    
+       89 +    })();                                                     
+       90 +                                                              
+       91 +    /* ── Load friend profile ────────────────────────────────
+          +── */                                                         
+       92 +    (async function () {                                      
+       93 +      var myUserId = localStorage.getItem('sb-userId');       
+       94 +      if (!myUserId) { location.href = 'login.html'; return; }
+       95 +                                                              
+       96 +      var params   = new URLSearchParams(location.search);    
+       97 +      var targetId = params.get('userId');                    
+       98 +      if (!targetId) { location.href = 'friends.html'; return;
+          + }                                                            
+       99 +                                                              
+      100 +      var loadingEl = document.getElementById('fp-loading');  
+      101 +      var bodyEl    = document.getElementById('fp-body');     
+      102 +      var errorEl   = document.getElementById('fp-error');    
+      103 +                                                              
+      104 +      try {                                                   
+      105 +        var res  = await fetch(`/api/friends/profile/${encodeU
+          +RIComponent(targetId)}`,                                      
+      106 +                               { credentials: 'include' });   
+      107 +        if (!res.ok) throw new Error('Not found');            
+      108 +        var data = await res.json();                          
+      109 +                                                              
+      110 +        /* Username */                                        
+      111 +        document.getElementById('fp-username').textContent = d
+          +ata.username;                                                 
+      112 +        document.title = data.username + ' – Study Buddy';    
+      113 +                                                              
+      114 +        /* Duck image */                                      
+      115 +        var eq = {                                            
+      116 +          hatId:   data.cosmetics.hatId,                      
+      117 +          shirtId: data.cosmetics.shirtId,                    
+      118 +          shoesId: data.cosmetics.shoesId,                    
+      119 +          glassesId: null,                                    
+      120 +        };                                                    
+      121 +        /* getDuckImage is a global from main.js */           
+      122 +        document.getElementById('fp-duck').src = getDuckImage(
+          +eq);                                                          
+      123 +                                                              
+      124 +        /* Rank — getRankInfo is a global from xpSystem.js */ 
+      125 +        var rankInfo = getRankInfo(data.totalXp);             
+      126 +        document.getElementById('fp-rank-badge').src        = 
+          +rankInfo.current.img;                                         
+      127 +        document.getElementById('fp-rank-name').textContent = 
+          +rankInfo.current.name;                                        
+      128 +                                                              
+      129 +        /* XP */                                              
+      130 +        document.getElementById('fp-xp').textContent = Math.fl
+          +oor(data.totalXp) + ' XP';                                    
+      131 +                                                              
+      132 +        /* Study time — convert seconds to h m */             
+      133 +        var totalSec = Math.floor(data.totalStudySeconds);    
+      134 +        var hours    = Math.floor(totalSec / 3600);           
+      135 +        var mins     = Math.floor((totalSec % 3600) / 60);    
+      136 +        document.getElementById('fp-time').textContent = hours
+          + + 'h ' + mins + 'm';                                         
+      137 +                                                              
+      138 +        loadingEl.hidden = true;                              
+      139 +        bodyEl.hidden    = false;                             
+      140 +      } catch (_) {                                           
+      141 +        loadingEl.hidden = true;                              
+      142 +        errorEl.hidden   = false;                             
+      143 +      }                                                       
+      144 +    })();                                                     
+      145 +  </script>                                                   
+      146  </body>
+      147  </html>
+
+● Write(study-buddy-html\styles\friends-profile.css)
+  ⎿  Added 96 lines, removed 127 lines
+        4    align-items: center;
+        5    justify-content: center;
+        6    padding: clamp(10px, 2vh, 20px) 16px;
+        7 -  overflow: hidden;                                           
+        7  }
+        8  
+       10 -/* Same friends container styles */                           
+       11 -.friends-container {                                          
+       12 -  width: 1150px;                                              
+       13 -  height: 650px;                                              
+       14 -  margin: auto;                                               
+       15 -  background-color: #fef3cf;                                  
+       16 -  border-radius: 10px;                                        
+        9 +/* ── Profile card ───────────────────────────────────────────
+          +── */                                                         
+       10 +.profile-card {                                               
+       11 +  position: relative;                                         
+       12 +  width: min(500px, 94vw);                                    
+       13 +  background: #fef3cf;                                        
+       14 +  border-radius: 16px;                                        
+       15    display: flex;
+       16    flex-direction: column;
+       17 +  align-items: center;                                        
+       18 +  justify-content: center;                                    
+       19 +  gap: 20px;                                                  
+       20 +  padding: 40px 32px;                                         
+       21 +  border: 2px solid #3b2a20;                                  
+       22 +  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);                
+       23  }
+       24  
+       21 -.top {                                                        
+       25 +/* ── Close button ───────────────────────────────────────────
+          +── */                                                         
+       26 +.profile-close-btn {                                          
+       27 +  position: absolute;                                         
+       28 +  top: 12px;                                                  
+       29 +  right: 12px;                                                
+       30 +  width: 34px;                                                
+       31 +  height: 34px;                                               
+       32    display: flex;
+       33    align-items: center;
+       24 -  justify-content: space-between;                             
+       25 -  padding: 12px 20px;                                         
+       26 -  border-bottom: 1px solid #3b2a20;                           
+       27 -  background: #e8d5a3;                                        
+       28 -  border-radius: 10px 10px 0 0;                               
+       34 +  justify-content: center;                                    
+       35 +  border-radius: 8px;                                         
+       36 +  text-decoration: none;                                      
+       37 +  transition: background 0.1s;                                
+       38  }
+       39  
+       31 -.top h1 {                                                     
+       32 -  margin: 0;                                                  
+       33 -  font-size: 40px;                                            
+       34 -  font-weight: 400;                                           
+       35 -  font-family: 'Inter', sans-serif;                           
+       36 -  color: #3b2a20;                                             
+       40 +.profile-close-btn:hover {                                    
+       41 +  background: rgba(0, 0, 0, 0.06);                            
+       42  }
+       43  
+       39 -.add-friend-btn {                                             
+       40 -  width: 42px;                                                
+       41 -  height: 42px;                                               
+       42 -  border: none;                                               
+       43 -  background: none;                                           
+       44 -  cursor: pointer;                                            
+       45 -  border-radius: 10px;                                        
+       44 +.profile-close-btn img {                                      
+       45 +  width: 22px;                                                
+       46 +  height: 22px;                                               
+       47 +  object-fit: contain;                                        
+       48 +}                                                             
+       49 +                                                              
+       50 +/* ── Duck avatar ────────────────────────────────────────────
+          +── */                                                         
+       51 +.profile-avatar-wrap {                                        
+       52 +  width: 200px;                                               
+       53 +  height: 200px;                                              
+       54 +  background: #ffffff;                                        
+       55 +  border-radius: 16px;                                        
+       56    display: flex;
+       57    align-items: center;
+       58    justify-content: center;
+       59  }
+       60  
+       51 -.add-friend-btn img {                                         
+       52 -  width: 28px;                                                
+       53 -  height: 28px;                                               
+       61 +.profile-pic {                                                
+       62 +  width: 160px;                                               
+       63 +  height: 160px;                                              
+       64 +  border-radius: 12px;                                        
+       65    object-fit: contain;
+       66  }
+       67  
+       57 -.add-friend-btn:hover {                                       
+       58 -  background: rgba(0, 0, 0, 0.05);                            
+       68 +/* ── Name ───────────────────────────────────────────────────
+          +── */                                                         
+       69 +.profile-name {                                               
+       70 +  font-family: 'Inter', sans-serif;                           
+       71 +  font-size: 22px;                                            
+       72 +  font-weight: 700;                                           
+       73 +  color: #3b2a20;                                             
+       74  }
+       75  
+       61 -.friend-list {                                                
+       62 -  flex: 1;                                                    
+       76 +/* ── Rank ───────────────────────────────────────────────────
+          +── */                                                         
+       77 +.profile-rank-wrap {                                          
+       78    display: flex;
+       79    flex-direction: column;
+       65 -  gap: 12px;                                                  
+       66 -  padding: 16px;                                              
+       67 -  overflow-y: auto;                                           
+       68 -}                                                             
+       69 -                                                              
+       70 -.friend-item {                                                
+       71 -  display: flex;                                              
+       80    align-items: center;
+       73 -  gap: 14px;                                                  
+       74 -  padding: 14px 18px;                                         
+       75 -  background: #f5e6a8;                                        
+       76 -  border-radius: 12px;                                        
+       81 +  gap: 6px;                                                   
+       82  }
+       83  
+       79 -.friend-avatar {                                              
+       80 -  width: 46px;                                                
+       81 -  height: 46px;                                               
+       82 -  border-radius: 50%;                                         
+       83 -  object-fit: cover;                                          
+       84 +.profile-rank {                                               
+       85 +  width: 80px;                                                
+       86 +  height: 80px;                                               
+       87 +  object-fit: contain;                                        
+       88  }
+       89  
+       86 -.friend-name {                                                
+       90 +.profile-rank-name {                                          
+       91    font-family: 'Inter', sans-serif;
+       88 -  font-size: 20px;                                            
+       89 -  font-weight: 600;                                           
+       92 +  font-size: 16px;                                            
+       93 +  font-weight: 700;                                           
+       94    color: #3b2a20;
+       95  }
+       96  
+       93 -.friend-request {                                             
+       94 -  padding: 16px;                                              
+       95 -}                                                             
+       96 -                                                              
+       97 -.friend-request-btn {                                         
+       98 -  color: #5a3a26;                                             
+       99 -  background: #f3c64a;                                        
+      100 -  padding: 10px 20px;                                         
+      101 -  border-radius: 12px;                                        
+      102 -  font-family: 'Inter', sans-serif;                           
+      103 -  font-weight: 700;                                           
+      104 -  font-size: 16px;                                            
+      105 -  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.18);                    
+      106 -  border: 2px solid rgba(0, 0, 0, 0.12);                      
+      107 -  cursor: pointer;                                            
+      108 -}                                                             
+      109 -                                                              
+      110 -/* Profile popup overlay */                                   
+      111 -.profile-overlay {                                            
+      112 -  position: fixed;                                            
+      113 -  top: 0;                                                     
+      114 -  left: 0;                                                    
+      115 -  width: 100%;                                                
+      116 -  height: 100%;                                               
+      117 -  background: rgba(0, 0, 0, 0.4);                             
+       97 +/* ── Stats row (XP + study time) ────────────────────────────
+          +── */                                                         
+       98 +.fp-body {                                                    
+       99    display: flex;
+      100 +  flex-direction: column;                                     
+      101    align-items: center;
+      120 -  justify-content: center;                                    
+      121 -  z-index: 100;                                               
+      102 +  gap: 20px;                                                  
+      103 +  width: 100%;                                                
+      104  }
+      105  
+      124 -.profile-card {                                               
+      125 -  position: relative;                                         
+      126 -  width: 500px;                                               
+      127 -  height: 600px;                                              
+      128 -  background: #fef3cf;                                        
+      129 -  border-radius: 16px;                                        
+      106 +.fp-stats {                                                   
+      107    display: flex;
+      131 -  flex-direction: column;                                     
+      108    align-items: center;
+      109 +  gap: 0;                                                     
+      110 +  background: #f5e6a8;                                        
+      111 +  border-radius: 12px;                                        
+      112 +  padding: 12px 24px;                                         
+      113 +  width: 100%;                                                
+      114    justify-content: center;
+      134 -  gap: 20px;                                                  
+      135 -  border: 2px solid #3b2a20;                                  
+      115  }
+      116  
+      138 -.profile-close-btn {                                          
+      139 -  position: absolute;                                         
+      140 -  top: 10px;                                                  
+      141 -  right: 10px;                                                
+      142 -  width: 32px;                                                
+      143 -  height: 32px;                                               
+      117 +.fp-stat {                                                    
+      118    display: flex;
+      119 +  flex-direction: column;                                     
+      120    align-items: center;
+      146 -  justify-content: center;                                    
+      147 -  border-radius: 8px;                                         
+      148 -  text-decoration: none;                                      
+      121 +  gap: 2px;                                                   
+      122 +  padding: 0 24px;                                            
+      123  }
+      124  
+      151 -.profile-close-btn img {                                      
+      152 -  width: 22px;                                                
+      153 -  height: 22px;                                               
+      154 -  object-fit: contain;                                        
+      125 +.fp-stat-val {                                                
+      126 +  font-family: 'Inter', sans-serif;                           
+      127 +  font-size: 18px;                                            
+      128 +  font-weight: 800;                                           
+      129 +  color: #3b2a20;                                             
+      130  }
+      131  
+      157 -.profile-close-btn:hover {                                    
+      158 -  background: rgba(0, 0, 0, 0.06);                            
+      132 +.fp-stat-label {                                              
+      133 +  font-family: 'Inter', sans-serif;                           
+      134 +  font-size: 12px;                                            
+      135 +  font-weight: 600;                                           
+      136 +  color: #7a5c3a;                                             
+      137 +  text-transform: uppercase;                                  
+      138 +  letter-spacing: 0.5px;                                      
+      139  }
+      140  
+      161 -.profile-avatar-wrap {                                        
+      162 -  width: 200px;                                               
+      163 -  height: 200px;                                              
+      164 -  background: #ffffff;                                        
+      165 -  border-radius: 16px;                                        
+      166 -  display: flex;                                              
+      167 -  align-items: center;                                        
+      168 -  justify-content: center;                                    
+      141 +.fp-stat-divider {                                            
+      142 +  width: 1px;                                                 
+      143 +  height: 36px;                                               
+      144 +  background: #c9ad7a;                                        
+      145  }
+      146  
+      171 -.profile-pic {                                                
+      172 -  width: 160px;                                               
+      173 -  height: 160px;                                              
+      174 -  border-radius: 12px;                                        
+      175 -  object-fit: contain;                                        
+      176 -}                                                             
+      177 -                                                              
+      178 -.profile-name {                                               
+      147 +/* ── Loading / error text ───────────────────────────────────
+          +── */                                                         
+      148 +.fp-loading,                                                  
+      149 +.fp-error {                                                   
+      150    font-family: 'Inter', sans-serif;
+      180 -  font-size: 20px;                                            
+      181 -  font-weight: 600;                                           
+      182 -  color: #3b2a20;                                             
+      151 +  font-size: 15px;                                            
+      152 +  color: #7a5c3a;                                             
+      153 +  text-align: center;                                         
+      154  }
+      155  
+      185 -.profile-rank {                                               
+      186 -  width: 100px;                                               
+      187 -  height: 100px;                                              
+      188 -  object-fit: contain;                                        
+      156 +.fp-error {                                                   
+      157 +  color: #c0392b;                                             
+      158  }
+
+● Now commit everything:
+
+● Bash(cd /c/Users/hevan/.local/bin/study-buddy && git status)
+  ⎿  On branch main
+     Your branch is up to date with 'origin/main'.
+     … +19 lines (ctrl+o to expand)
+
+● Bash(cd /c/Users/hevan/.local/bin/study-buddy && git add server/index.js
+      server/routes/friends.js study-buddy-html/friends.html
+      study-buddy-html/friends-profile.html…)
+  ⎿  warning: in the working copy of 'study-buddy-html/friends-profile.html
+     ', LF will be replaced by CRLF the next time Git touches it
+     warning: in the working copy of 'study-buddy-html/friends.html', LF wi
+     … +9 lines (ctrl+o to expand)
+
+● Bash(cd /c/Users/hevan/.local/bin/study-buddy && git push origin main)
+  ⎿  remote: This repository moved. Please use the new location:
+     remote:   https://github.com/hevanx/Study-Buddy.git
+     To https://github.com/hevanx/study-buddy.git
+        cc4e359..7edabf6  main -> main
+
+● Pushed as commit 7edabf6. Here's the full summary:
+
+  ---
+  A) Schema — Confirmed
+
+  The existing friendships table already supports everything. No ALTER TABLE 
+  needed.
+
+  The only design decision: decline now deletes the row (not sets
+  status='declined'). This lets the sender re-request in the future. The
+  declined enum value remains in the schema — it's just unused.
+
+  ---
+  B) All endpoints (server/routes/friends.js)
+
+  ┌────────┬──────────────────────────────┬──────────────────────────────────┐
+  │ Method │             Path             │             Purpose              │
+  ├────────┼──────────────────────────────┼──────────────────────────────────┤
+  │ GET    │ /api/friends/search?q=       │ Partial username search with     │
+  │        │                              │ relationship state               │
+  ├────────┼──────────────────────────────┼──────────────────────────────────┤
+  │ GET    │ /api/friends                 │ Accepted friends list            │
+  ├────────┼──────────────────────────────┼──────────────────────────────────┤
+  │ GET    │ /api/friends/incoming        │ Pending requests received        │
+  ├────────┼──────────────────────────────┼──────────────────────────────────┤
+  │ GET    │ /api/friends/outgoing        │ Pending requests sent            │
+  ├────────┼──────────────────────────────┼──────────────────────────────────┤
+  │ POST   │ /api/friends/request         │ Send request (all edge cases     │
+  │        │                              │ handled)                         │
+  ├────────┼──────────────────────────────┼──────────────────────────────────┤
+  │ PATCH  │ /api/friends/:id/accept      │ Accept (receiver only)           │
+  ├────────┼──────────────────────────────┼──────────────────────────────────┤
+  │ PATCH  │ /api/friends/:id/decline     │ Decline → deletes row            │
+  ├────────┼──────────────────────────────┼──────────────────────────────────┤
+  │ DELETE │ /api/friends/:id             │ Cancel outgoing OR unfriend      │
+  ├────────┼──────────────────────────────┼──────────────────────────────────┤
+  │ GET    │ /api/friends/profile/:userId │ Public profile with live XP      │
+  └────────┴──────────────────────────────┴──────────────────────────────────┘
+
+  ---
+  C) Frontend
+
+  - friends.html — 4-tab interface (Friends / Requests / Sent / Find Friends)
+  with badge counts on request tabs
+  - friends-profile.html — Dynamic profile loaded by ?userId=, shows duck, rank,
+   XP, study time
+  - scripts/friends.js — All tab logic, API calls, inline
+  accept/decline/cancel/unfriend
+
+  ---
+  E) Manual Testing Checklist
+
+  1. Auth guard — Open friends.html logged out → should redirect to login.html
+  2. Friends tab — Log in as hevan, go to Friends → should see alex_studies and
+  diamondDave
+  3. Requests tab — Log in as hevan → should see silverstar's pending request
+  with Accept/Decline buttons
+  4. Accept → both users now appear in each other's Friends tab
+  5. Decline → request disappears; silverstar can re-send (row deleted)
+  6. Sent tab — Log in as silverstar → should see pending request to hevan with
+  Cancel button
+  7. Cancel → request removed from both Sent and Requests tabs
+  8. Find Friends — Search alex → shows result with "Friends" tag (already
+  friends with hevan); search goldie → shows "Add Friend" button
+  9. Send request — Click Add Friend → button changes to "Sent!"; switch to Sent
+   tab to confirm
+  10. Crossed request — User A sends to B, B sends to A → auto-accepts, both see
+   as Friends
+  11. Self-search — Search own username → shows "You" tag, no Add Friend button
+  12. Duplicate request — Try sending request to same user twice → second shows
+  "Friend request already sent"
+  13. Friend profile — Click friend row → opens friends-profile.html?userId=X
+  with correct duck, rank, XP, study time
+  14. Live XP on profile — Start timer on user B's machine, view their profile →
+   XP increments in real time from server session_start
+  15. Unfriend — Click X on a friend → confirm prompt → removed from list
+  16. Badge count — Go to Requests tab with pending incoming → badge shows
+  correct count, disappears when cleared
+
+✻ Worked for 15m 50s
+
+> the friends need to be styled the same as the other buttons and follow    
+  the style flow of the rest of the pages                                   
+
+● Read 2 files (ctrl+o to expand)
+
+● Now I can see exactly what the site's design language is. The leaderboard rows
+   are white cards with box-shadows, the nav/action buttons are gold with a
+  press shadow, and tabs match the customize panel style. The friends page rows
+  and buttons don't follow any of that. Let me fix it all.
+
+● Write(study-buddy-html\styles\friends.css)
+  ⎿  Added 138 lines, removed 123 lines
+      1 +/* ── Page layout ──────────────────────────────────────────────
+        + */                                                             
+      2  .sb-main {
+      3    display: flex;
+      4    flex-direction: column;
+     ...
+        7    overflow-y: auto;
+        8  }
+        9  
+       10 +/* ── Outer container — matches leaderboard panel ────────────
+          +─── */                                                        
+       11  .friends-container {
+       10 -  width: min(1100px, 94vw);                                   
+       11 -  background-color: #fef3cf;                                  
+       12 +  width: min(860px, 94vw);                                    
+       13 +  background: #f3c64a;                                        
+       14    border-radius: 12px;
+       15 +  padding: clamp(14px, 2vw, 22px);                            
+       16    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
+       17    display: flex;
+       18    flex-direction: column;
+       19 +  gap: 0;                                                     
+       20  }
+       21  
+       18 -/* ── Top bar ────────────────────────────────────────────────
+          -── */                                                         
+       22 +/* ── Top bar — title + search icon ──────────────────────────
+          +─── */                                                        
+       23  .top {
+       24    display: flex;
+       25    align-items: center;
+       26    justify-content: space-between;
+       23 -  padding: 12px 20px;                                         
+       24 -  border-bottom: 1px solid #3b2a20;                           
+       25 -  background: #e8d5a3;                                        
+       26 -  border-radius: 10px 10px 0 0;                               
+       27 +  margin-bottom: 12px;                                        
+       28  }
+       29  
+       30  .top h1 {
+       31    margin: 0;
+       31 -  font-size: clamp(22px, 3vw, 40px);                          
+       32 +  font-size: clamp(22px, 3vw, 30px);                          
+       33    font-weight: 800;
+       34    font-family: 'Inter', sans-serif;
+       35    color: #3b2a20;
+       36    letter-spacing: 0.3px;
+       37 +  text-align: center;                                         
+       38 +  flex: 1;                                                    
+       39  }
+       40  
+       41  .add-friend-btn {
+       42    width: 40px;
+       43    height: 40px;
+       41 -  background: none;                                           
+       42 -  border: none;                                               
+       44 +  background: rgba(255, 255, 255, 0.5);                       
+       45 +  border: 2px solid rgba(0, 0, 0, 0.12);                      
+       46 +  border-radius: 10px;                                        
+       47    cursor: pointer;
+       48    display: flex;
+       49    align-items: center;
+       50    justify-content: center;
+       47 -  border-radius: 8px;                                         
+       51 +  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);                    
+       52 +  transition: background 0.12s;                               
+       53 +  flex-shrink: 0;                                             
+       54  }
+       55  
+       50 -.add-friend-btn:hover {                                       
+       51 -  background: rgba(0, 0, 0, 0.06);                            
+       52 -}                                                             
+       56 +.add-friend-btn:hover  { background: rgba(255, 255, 255, 0.75)
+          +; }                                                           
+       57 +.add-friend-btn:active { transform: translateY(1px); box-shado
+          +w: 0 1px 0 rgba(0,0,0,.12); }                                 
+       58  
+       59  .add-friend-btn img {
+       55 -  width: 30px;                                                
+       56 -  height: 30px;                                               
+       60 +  width: 22px;                                                
+       61 +  height: 22px;                                               
+       62    object-fit: contain;
+       63  }
+       64  
+       60 -/* ── Tab strip ──────────────────────────────────────────────
+          -── */                                                         
+       65 +/* ── Inner cream box — wraps tabs + content (mirrors .sb-pane
+          +l-inner) */                                                   
+       66 +.sb-friend-inner {                                            
+       67 +  background: #f6efdf;                                        
+       68 +  border-radius: 8px;                                         
+       69 +  padding: clamp(10px, 1.5vw, 14px) clamp(12px, 1.8vw, 16px); 
+       70 +  border: 2px solid rgba(0, 0, 0, 0.06);                      
+       71 +  display: flex;                                              
+       72 +  flex-direction: column;                                     
+       73 +  gap: 10px;                                                  
+       74 +}                                                             
+       75 +                                                              
+       76 +/* ── Tab strip — matches .sb-customize-tabs ─────────────────
+          +─── */                                                        
+       77  .sb-friend-tabs {
+       78    display: flex;
+       63 -  gap: 4px;                                                   
+       64 -  padding: 10px 16px 0;                                       
+       65 -  background: #e8d5a3;                                        
+       66 -  border-bottom: 2px solid #3b2a20;                           
+       79 +  gap: 6px;                                                   
+       80 +  flex-wrap: wrap;                                            
+       81  }
+       82  
+       83 +/* Individual tab — matches .sb-customize-tab */              
+       84  .sb-friend-tab {
+       70 -  position: relative;                                         
+       85 +  appearance: none;                                           
+       86 +  border: 2px solid rgba(0, 0, 0, 0.12);                      
+       87 +  background: #ffffff;                                        
+       88 +  color: #5a3a26;                                             
+       89    font-family: 'Inter', sans-serif;
+       72 -  font-size: 14px;                                            
+       90 +  font-size: clamp(13px, 1.4vw, 15px);                        
+       91    font-weight: 700;
+       74 -  color: #5a3a26;                                             
+       75 -  background: #f5e6a8;                                        
+       76 -  border: 2px solid transparent;                              
+       77 -  border-bottom: none;                                        
+       78 -  border-radius: 8px 8px 0 0;                                 
+       79 -  padding: 8px 18px;                                          
+       92 +  padding: 8px 16px;                                          
+       93 +  border-radius: 10px;                                        
+       94    cursor: pointer;
+       95 +  white-space: nowrap;                                        
+       96 +  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.10);                    
+       97 +  position: relative;                                         
+       98    transition: background 0.12s;
+       99  }
+      100  
+       84 -.sb-friend-tab:hover {                                        
+       85 -  background: #f0dc8e;                                        
+       86 -}                                                             
+      101 +.sb-friend-tab:hover  { background: #fffdf7; }                
+      102 +.sb-friend-tab:active { transform: translateY(1px); box-shadow
+          +: 0 1px 0 rgba(0,0,0,.10); }                                  
+      103  
+      104 +/* Active tab — matches .sb-customize-tab--active */          
+      105  .sb-friend-tab--active {
+       89 -  background: #fef3cf;                                        
+       90 -  border-color: #3b2a20;                                      
+       91 -  color: #3b2a20;                                             
+       92 -  /* sits on top of the container border */                   
+       93 -  margin-bottom: -2px;                                        
+      106 +  background: #f3c64a;                                        
+      107 +  border-color: #d9a520;                                      
+      108  }
+      109  
+       96 -/* ── Badge (request count) ──────────────────────────────────
+          -── */                                                         
+      110 +/* ── Badge (unread request count) ───────────────────────────
+          +── */                                                         
+      111  .sb-badge {
+      112    display: inline-flex;
+      113    align-items: center;
+     ...
+      115    min-width: 18px;
+      116    height: 18px;
+      117    padding: 0 5px;
+      104 -  background: #e05c2a;                                        
+      118 +  background: #c0392b;                                        
+      119    color: #fff;
+      120    border-radius: 99px;
+      121    font-size: 11px;
+      122    font-weight: 800;
+      109 -  margin-left: 6px;                                           
+      123 +  margin-left: 5px;                                           
+      124    vertical-align: middle;
+      125  }
+      126  
+      113 -/* ── Tab panels ─────────────────────────────────────────────
+          -── */                                                         
+      127 +/* ── Panel wrappers ─────────────────────────────────────────
+          +── */                                                         
+      128  .sb-friend-panel {
+      129    display: flex;
+      130    flex-direction: column;
+      117 -  min-height: 200px;                                          
+      131  }
+      132  
+      120 -/* ── Friend / request lists ─────────────────────────────────
+          -── */                                                         
+      133 +/* ── Scrollable lists ───────────────────────────────────────
+          +─── */                                                        
+      134  .friend-list,
+      135  .request-list {
+      136    display: flex;
+      137    flex-direction: column;
+      125 -  gap: 12px;                                                  
+      126 -  padding: 16px;                                              
+      127 -  max-height: clamp(300px, 52vh, 540px);                      
+      138 +  gap: clamp(6px, 1vh, 10px);                                 
+      139 +  max-height: clamp(280px, 46vh, 500px);                      
+      140    overflow-y: auto;
+      141  }
+      142  
+      143 +/* ── Loading / empty states ─────────────────────────────────
+          +─── */                                                        
+      144  .sb-friend-loading,
+      145  .sb-friend-empty {
+      146 +  text-align: center;                                         
+      147    font-family: 'Inter', sans-serif;
+      148    font-size: 15px;
+      135 -  color: #7a5c3a;                                             
+      136 -  padding: 12px 0;                                            
+      137 -  text-align: center;                                         
+      149 +  font-weight: 600;                                           
+      150 +  color: #8a6a50;                                             
+      151 +  padding: 18px 0 10px;                                       
+      152 +  margin: 0;                                                  
+      153  }
+      154  
+      140 -/* ── Individual friend item ─────────────────────────────────
+          -── */                                                         
+      141 -.friend-item {                                                
+      155 +/* ── Friend row — matches .sb-row from leaderboard ──────────
+          +─── */                                                        
+      156 +.friend-item,                                                 
+      157 +.request-item {                                               
+      158 +  background: #ffffff;                                        
+      159 +  border-radius: 8px;                                         
+      160 +  padding: clamp(8px, 1vh, 11px) clamp(10px, 1.4vw, 14px);    
+      161    display: flex;
+      162    align-items: center;
+      144 -  gap: 14px;                                                  
+      145 -  padding: 14px 18px;                                         
+      146 -  background: #f5e6a8;                                        
+      147 -  border-radius: 12px;                                        
+      148 -  cursor: pointer;                                            
+      149 -  transition: background 0.1s;                                
+      163 +  gap: clamp(8px, 1.2vw, 12px);                               
+      164 +  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.10), 0 4px 10px rgba(0, 
+          +0, 0, 0.06);                                                  
+      165 +  border: 1px solid rgba(0, 0, 0, 0.06);                      
+      166  }
+      167  
+      152 -.friend-item:hover {                                          
+      153 -  background: #f0dc8e;                                        
+      168 +.friend-item {                                                
+      169 +  cursor: pointer;                                            
+      170 +  transition: background 0.10s;                               
+      171  }
+      172  
+      156 -/* ── Request item ───────────────────────────────────────────
+          -── */                                                         
+      157 -.request-item {                                               
+      158 -  display: flex;                                              
+      159 -  align-items: center;                                        
+      160 -  gap: 14px;                                                  
+      161 -  padding: 14px 18px;                                         
+      162 -  background: #f5e6a8;                                        
+      163 -  border-radius: 12px;                                        
+      164 -}                                                             
+      173 +.friend-item:hover { background: #fffdf7; }                   
+      174  
+      166 -/* ── Shared avatar / name ───────────────────────────────────
+          -── */                                                         
+      175 +/* ── Avatar ─────────────────────────────────────────────────
+          +── */                                                         
+      176  .friend-avatar {
+      168 -  width: 46px;                                                
+      169 -  height: 46px;                                               
+      177 +  width: clamp(32px, 3.5vw, 40px);                            
+      178 +  height: clamp(32px, 3.5vw, 40px);                           
+      179    border-radius: 50%;
+      180    object-fit: cover;
+      181    flex-shrink: 0;
+      182  }
+      183  
+      184 +/* ── Name — matches .sb-row-name ────────────────────────────
+          +── */                                                         
+      185  .friend-name {
+      186    font-family: 'Inter', sans-serif;
+      177 -  font-size: 20px;                                            
+      187 +  font-size: clamp(14px, 1.6vw, 16px);                        
+      188    font-weight: 600;
+      179 -  color: #3b2a20;                                             
+      189 +  color: #1f1f1f;                                             
+      190    flex: 1;
+      191    min-width: 0;
+      192    overflow: hidden;
+     ...
+      194    white-space: nowrap;
+      195  }
+      196  
+      187 -/* ── Action button group ────────────────────────────────────
+          -── */                                                         
+      197 +/* ── Action button group ────────────────────────────────────
+          +─── */                                                        
+      198  .request-actions {
+      199    display: flex;
+      190 -  gap: 8px;                                                   
+      200 +  gap: 6px;                                                   
+      201    align-items: center;
+      202    flex-shrink: 0;
+      203  }
+      204  
+      205 +/* ── Icon action buttons (accept ✓ / decline ✗ / cancel / vie
+          +w)                                                            
+      206 +   Match .sb-customize-card style: white, border, box-shadow, 
+      207 +   press effect on active.                                    
+          +  */                                                          
+      208  .action-btn {
+      196 -  width: 42px;                                                
+      197 -  height: 42px;                                               
+      198 -  border: none;                                               
+      199 -  background: none;                                           
+      209 +  width: 38px;                                                
+      210 +  height: 38px;                                               
+      211 +  border: 2px solid rgba(0, 0, 0, 0.12);                      
+      212 +  background: #ffffff;                                        
+      213    cursor: pointer;
+      214    border-radius: 10px;
+      215    display: flex;
+      216    align-items: center;
+      217    justify-content: center;
+      218 +  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.10);                    
+      219    transition: background 0.1s;
+      220 +  flex-shrink: 0;                                             
+      221  }
+      222  
+      223  .action-btn img {
+      209 -  width: 28px;                                                
+      210 -  height: 28px;                                               
+      224 +  width: 20px;                                                
+      225 +  height: 20px;                                               
+      226    object-fit: contain;
+      227  }
+      228  
+      214 -.action-btn:hover {                                           
+      215 -  background: rgba(0, 0, 0, 0.07);                            
+      216 -}                                                             
+      229 +.action-btn:hover  { background: #fffdf7; }                   
+      230 +.action-btn:active { transform: translateY(1px); box-shadow: 0
+          + 1px 0 rgba(0,0,0,.10); }                                     
+      231 +.action-btn:disabled { opacity: 0.4; cursor: not-allowed; tran
+          +sform: none; }                                                
+      232  
+      218 -.action-btn:disabled {                                        
+      219 -  opacity: 0.4;                                               
+      220 -  cursor: not-allowed;                                        
+      221 -}                                                             
+      233 +/* Accept gets a soft green tint on hover */                  
+      234 +.action-btn.accept:hover { background: #eafbea; border-color: 
+          +#6dbf6d; }                                                    
+      235  
+      223 -/* ── Relationship tag (search results) ──────────────────────
+          -── */                                                         
+      236 +/* ── Relationship tag shown in search results ───────────────
+          +── */                                                         
+      237  .sb-rel-tag {
+      238    font-family: 'Inter', sans-serif;
+      239    font-size: 13px;
+      240    font-weight: 700;
+      241    color: #5a3a26;
+      229 -  background: #e8d5a3;                                        
+      230 -  border-radius: 8px;                                         
+      231 -  padding: 4px 10px;                                          
+      242 +  background: #f3c64a;                                        
+      243 +  border: 2px solid rgba(0, 0, 0, 0.10);                      
+      244 +  border-radius: 99px;                                        
+      245 +  padding: 3px 12px;                                          
+      246  }
+      247  
+      234 -/* ── Add Friend button (search results) ─────────────────────
+          -── */                                                         
+      248 +/* ── "Add Friend" button — matches .sb-nav-btn ──────────────
+          +─── */                                                        
+      249  .sb-add-btn {
+      250    font-family: 'Inter', sans-serif;
+      237 -  font-size: 14px;                                            
+      251 +  font-size: clamp(13px, 1.4vw, 15px);                        
+      252    font-weight: 700;
+      253    color: #5a3a26;
+      254    background: #f3c64a;
+      255    border: 2px solid rgba(0, 0, 0, 0.12);
+      256    border-radius: 10px;
+      243 -  padding: 8px 16px;                                          
+      257 +  padding: 7px 16px;                                          
+      258    cursor: pointer;
+      245 -  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);                    
+      246 -  transition: background 0.1s, transform 0.1s;                
+      259 +  white-space: nowrap;                                        
+      260 +  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.16);                    
+      261 +  transition: background 0.1s;                                
+      262  }
+      263  
+      264  .sb-add-btn:hover   { background: #f0b830; }
+      250 -.sb-add-btn:active  { transform: translateY(1px); box-shadow: 
+          -0 2px 0 rgba(0,0,0,.15); }                                    
+      251 -.sb-add-btn:disabled { opacity: 0.5; cursor: not-allowed; }   
+      252 -.sb-sent-btn        { background: #c5e8a0 !important; }       
+      265 +.sb-add-btn:active  { transform: translateY(2px); box-shadow: 
+          +0 2px 0 rgba(0,0,0,.16); }                                    
+      266 +.sb-add-btn:disabled { opacity: 0.5; cursor: not-allowed; tran
+          +sform: none; }                                                
+      267  
+      254 -/* ── Row error message ──────────────────────────────────────
+          -── */                                                         
+      268 +/* Sent confirmation state */                                 
+      269 +.sb-sent-btn { background: #d4edda !important; border-color: #
+          +6dbf6d !important; color: #2d6a2d !important; }               
+      270 +                                                              
+      271 +/* ── Inline error text ──────────────────────────────────────
+          +─── */                                                        
+      272  .sb-row-err {
+      273    font-family: 'Inter', sans-serif;
+      274    font-size: 12px;
+     ...
+      276    padding: 0 4px;
+      277  }
+      278  
+      262 -/* ── Search bar ─────────────────────────────────────────────
+          -── */                                                         
+      279 +/* ── Search bar (Find Friends tab) ──────────────────────────
+          +── */                                                         
+      280  .sb-search-bar {
+      281    display: flex;
+      265 -  gap: 10px;                                                  
+      266 -  padding: 16px 16px 8px;                                     
+      282 +  gap: 8px;                                                   
+      283 +  margin-bottom: 6px;                                         
+      284  }
+      285  
+      286  .sb-search-bar input {
+      287    flex: 1;
+      288    font-family: 'Inter', sans-serif;
+      272 -  font-size: 15px;                                            
+      273 -  padding: 10px 14px;                                         
+      274 -  border: 2px solid #c9ad7a;                                  
+      289 +  font-size: clamp(14px, 1.5vw, 15px);                        
+      290 +  padding: 9px 14px;                                          
+      291 +  border: 2px solid rgba(0, 0, 0, 0.14);                      
+      292    border-radius: 10px;
+      276 -  background: #fff9ec;                                        
+      293 +  background: #ffffff;                                        
+      294    color: #3b2a20;
+      295    outline: none;
+      296 +  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);            
+      297  }
+      298  
+      281 -.sb-search-bar input:focus {                                  
+      282 -  border-color: #3b2a20;                                      
+      283 -}                                                             
+      299 +.sb-search-bar input:focus { border-color: #d9a520; }         
+      300 +.sb-search-bar input::placeholder { color: #b09070; }         
+      301  
+      285 -/* ── Existing request / search button style ─────────────────
+          -── */                                                         
+      302 +/* Search submit button — matches .sb-nav-btn */              
+      303  .friend-request-btn {
+      287 -  text-decoration: none;                                      
+      288 -  color: #5a3a26;                                             
+      289 -  background: #f3c64a;                                        
+      290 -  padding: 10px 20px;                                         
+      291 -  border-radius: 12px;                                        
+      304    font-family: 'Inter', sans-serif;
+      305 +  font-size: clamp(13px, 1.4vw, 15px);                        
+      306    font-weight: 700;
+      294 -  font-size: 15px;                                            
+      295 -  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.18);                    
+      307 +  color: #5a3a26;                                             
+      308 +  background: #f3c64a;                                        
+      309    border: 2px solid rgba(0, 0, 0, 0.12);
+      310 +  border-radius: 10px;                                        
+      311 +  padding: 9px 20px;                                          
+      312    cursor: pointer;
+      313    white-space: nowrap;
+      314 +  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.16);                    
+      315 +  transition: background 0.1s;                                
+      316  }
+      317  
+      301 -.friend-request-btn:active {                                  
+      302 -  transform: translateY(2px);                                 
+      303 -  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.18);                    
+      304 -}                                                             
+      318 +.friend-request-btn:hover  { background: #f0b830; }           
+      319 +.friend-request-btn:active { transform: translateY(2px); box-s
+          +hadow: 0 2px 0 rgba(0,0,0,.16); }                             
+
+● The CSS uses a new .sb-friend-inner wrapper div — need to add that to the HTML
+   and restructure the container slightly:
+
+● Read 1 file (ctrl+o to expand)
+
+● Update(study-buddy-html\friends.html)
+  ⎿  Added 41 lines, removed 36 lines
+      35          </button>
+      36        </div>
+      37  
+      38 -      <!-- Tab strip -->                                       
+      39 -      <div class="sb-friend-tabs" role="tablist">              
+      40 -        <button id="tab-friends"  class="sb-friend-tab" role="t
+         -ab" aria-selected="false">Friends</button>                     
+      41 -        <button id="tab-requests" class="sb-friend-tab" role="t
+         -ab" aria-selected="false">                                     
+      42 -          Requests <span id="badge-requests" class="sb-badge" h
+         -idden></span>                                                  
+      43 -        </button>                                              
+      44 -        <button id="tab-sent"     class="sb-friend-tab" role="t
+         -ab" aria-selected="false">                                     
+      45 -          Sent <span id="badge-sent" class="sb-badge" hidden></
+         -span>                                                          
+      46 -        </button>                                              
+      47 -        <button id="tab-search"   class="sb-friend-tab" role="t
+         -ab" aria-selected="false">Find Friends</button>                
+      48 -      </div>                                                   
+      38 +      <!-- Inner cream box: tabs + all panels live inside here 
+         +-->                                                            
+      39 +      <div class="sb-friend-inner">                            
+      40  
+      50 -      <!-- Panel: Friends -->                                  
+      51 -      <div id="panel-friends" class="sb-friend-panel" hidden>  
+      52 -        <div class="friend-list" id="friends-list">            
+      53 -          <p class="sb-friend-loading">Loading…</p>            
+      41 +        <!-- Tab strip -->                                     
+      42 +        <div class="sb-friend-tabs" role="tablist">            
+      43 +          <button id="tab-friends"  class="sb-friend-tab" role=
+         +"tab" aria-selected="false">Friends</button>                   
+      44 +          <button id="tab-requests" class="sb-friend-tab" role=
+         +"tab" aria-selected="false">                                   
+      45 +            Requests <span id="badge-requests" class="sb-badge"
+         + hidden></span>                                                
+      46 +          </button>                                            
+      47 +          <button id="tab-sent"     class="sb-friend-tab" role=
+         +"tab" aria-selected="false">                                   
+      48 +            Sent <span id="badge-sent" class="sb-badge" hidden>
+         +</span>                                                        
+      49 +          </button>                                            
+      50 +          <button id="tab-search"   class="sb-friend-tab" role=
+         +"tab" aria-selected="false">Find Friends</button>              
+      51          </div>
+      55 -      </div>                                                   
+      52  
+      57 -      <!-- Panel: Incoming Requests -->                        
+      58 -      <div id="panel-requests" class="sb-friend-panel" hidden> 
+      59 -        <div class="request-list" id="incoming-list">          
+      60 -          <p class="sb-friend-loading">Loading…</p>            
+      53 +        <!-- Panel: Friends -->                                
+      54 +        <div id="panel-friends" class="sb-friend-panel" hidden>
+      55 +          <div class="friend-list" id="friends-list">          
+      56 +            <p class="sb-friend-loading">Loading…</p>          
+      57 +          </div>                                               
+      58          </div>
+      62 -      </div>                                                   
+      59  
+      64 -      <!-- Panel: Sent / Outgoing -->                          
+      65 -      <div id="panel-sent" class="sb-friend-panel" hidden>     
+      66 -        <div class="request-list" id="outgoing-list">          
+      67 -          <p class="sb-friend-loading">Loading…</p>            
+      60 +        <!-- Panel: Incoming Requests -->                      
+      61 +        <div id="panel-requests" class="sb-friend-panel" hidden
+         +>                                                              
+      62 +          <div class="request-list" id="incoming-list">        
+      63 +            <p class="sb-friend-loading">Loading…</p>          
+      64 +          </div>                                               
+      65          </div>
+      69 -      </div>                                                   
+      66  
+      71 -      <!-- Panel: Find Friends (search) -->                    
+      72 -      <div id="panel-search" class="sb-friend-panel" hidden>   
+      73 -        <div class="sb-search-bar">                            
+      74 -          <input id="friend-search-input"                      
+      75 -                 type="text"                                   
+      76 -                 placeholder="Search by username…"             
+      77 -                 autocomplete="off" />                         
+      78 -          <button id="friend-search-btn" class="friend-request-
+         -btn">Search</button>                                           
+      67 +        <!-- Panel: Sent / Outgoing -->                        
+      68 +        <div id="panel-sent" class="sb-friend-panel" hidden>   
+      69 +          <div class="request-list" id="outgoing-list">        
+      70 +            <p class="sb-friend-loading">Loading…</p>          
+      71 +          </div>                                               
+      72          </div>
+      80 -        <div class="request-list" id="search-list"></div>      
+      81 -      </div>                                                   
+      73  
+      74 +        <!-- Panel: Find Friends (search) -->                  
+      75 +        <div id="panel-search" class="sb-friend-panel" hidden> 
+      76 +          <div class="sb-search-bar">                          
+      77 +            <input id="friend-search-input"                    
+      78 +                   type="text"                                 
+      79 +                   placeholder="Search by username…"           
+      80 +                   autocomplete="off" />                       
+      81 +            <button id="friend-search-btn" class="friend-reques
+         +t-btn">Search</button>                                         
+      82 +          </div>                                               
+      83 +          <div class="request-list" id="search-list"></div>    
+      84 +        </div>                                                 
+      85 +                                                               
+      86 +      </div><!-- /.sb-friend-inner -->                         
+      87 +                                                               
+      88      </div><!-- /.friends-container -->
+      89    </main>
+      90  
+
+● Now do the same treatment to friends-profile.css — the card should match the
+  established profile card style, and the stats section should use the white-row
+   pattern:
+
+● Write(study-buddy-html\styles\friends-profile.css)
+  ⎿  Added 41 lines, removed 39 lines
+       1 +/* ── Page layout — same as profile.css ───────────────────────
+         +─ */                                                           
+       2  .sb-main {
+       3    height: calc(100svh - 86px);
+       4    display: flex;
+       5    align-items: center;
+       6    justify-content: center;
+       7    padding: clamp(10px, 2vh, 20px) 16px;
+       8 +  overflow: hidden;                                            
+       9  }
+      10  
+       9 -/* ── Profile card ────────────────────────────────────────────
+         -─ */                                                           
+      11 +/* ── Profile card — matches profile.css exactly ──────────────
+         +─ */                                                           
+      12  .profile-card {
+      13    position: relative;
+      14    width: min(500px, 94vw);
+     ...
+      19    align-items: center;
+      20    justify-content: center;
+      21    gap: 20px;
+      20 -  padding: 40px 32px;                                          
+      22 +  padding: 44px 32px 32px;                                     
+      23    border: 2px solid #3b2a20;
+      22 -  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);                 
+      24  }
+      25  
+      25 -/* ── Close button ────────────────────────────────────────────
+         -─ */                                                           
+      26 +/* ── Close / back button ─────────────────────────────────────
+         +── */                                                          
+      27  .profile-close-btn {
+      28    position: absolute;
+      29    top: 12px;
+      30    right: 12px;
+      30 -  width: 34px;                                                 
+      31 -  height: 34px;                                                
+      31 +  width: 36px;                                                 
+      32 +  height: 36px;                                                
+      33    display: flex;
+      34    align-items: center;
+      35    justify-content: center;
+      36    border-radius: 8px;
+      37    text-decoration: none;
+      38 +  border: 2px solid rgba(0, 0, 0, 0.12);                       
+      39 +  background: #ffffff;                                         
+      40 +  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.10);                     
+      41    transition: background 0.1s;
+      42  }
+      43  
+      40 -.profile-close-btn:hover {                                     
+      41 -  background: rgba(0, 0, 0, 0.06);                             
+      42 -}                                                              
+      44 +.profile-close-btn:hover  { background: #fffdf7; }             
+      45 +.profile-close-btn:active { transform: translateY(1px); box-sha
+         +dow: 0 1px 0 rgba(0,0,0,.10); }                                
+      46  
+      47  .profile-close-btn img {
+      45 -  width: 22px;                                                 
+      46 -  height: 22px;                                                
+      48 +  width: 18px;                                                 
+      49 +  height: 18px;                                                
+      50    object-fit: contain;
+      51  }
+      52  
+      50 -/* ── Duck avatar ─────────────────────────────────────────────
+         -─ */                                                           
+      53 +/* ── Duck avatar — matches profile.css ───────────────────────
+         +─ */                                                           
+      54  .profile-avatar-wrap {
+      55    width: 200px;
+      56    height: 200px;
+     ...
+      68    object-fit: contain;
+      69  }
+      70  
+      68 -/* ── Name ────────────────────────────────────────────────────
+         -─ */                                                           
+      71 +/* ── Username — matches profile.css ──────────────────────────
+         +─ */                                                           
+      72  .profile-name {
+      73    font-family: 'Inter', sans-serif;
+      71 -  font-size: 22px;                                             
+      72 -  font-weight: 700;                                            
+      74 +  font-size: 20px;                                             
+      75 +  font-weight: 600;                                            
+      76    color: #3b2a20;
+      77  }
+      78  
+      76 -/* ── Rank ────────────────────────────────────────────────────
+         -─ */                                                           
+      79 +/* ── Rank block — matches profile.css ────────────────────────
+         +─ */                                                           
+      80  .profile-rank-wrap {
+      81    display: flex;
+      82    flex-direction: column;
+     ...
+      85  }
+      86  
+      87  .profile-rank {
+      85 -  width: 80px;                                                 
+      86 -  height: 80px;                                                
+      88 +  width: 100px;                                                
+      89 +  height: 100px;                                               
+      90    object-fit: contain;
+      91  }
+      92  
+     ...
+       95    font-size: 16px;
+       96    font-weight: 700;
+       97    color: #3b2a20;
+       98 +  letter-spacing: 0.3px;                                      
+       99  }
+      100  
+       97 -/* ── Stats row (XP + study time) ────────────────────────────
+          -── */                                                         
+      101 +/* ── fp-body wrapper ────────────────────────────────────────
+          +─── */                                                        
+      102  .fp-body {
+       99 -  display: flex;                                              
+      100 -  flex-direction: column;                                     
+      101 -  align-items: center;                                        
+      102 -  gap: 20px;                                                  
+      103 -  width: 100%;                                                
+      103 +  display: contents;   /* lets children participate in the car
+          +d's flex gap */                                               
+      104  }
+      105  
+      106 +/* ── Stats row — white card matching .sb-row from leaderboard
+          + ── */                                                        
+      107  .fp-stats {
+      108    display: flex;
+      109    align-items: center;
+      109 -  gap: 0;                                                     
+      110 -  background: #f5e6a8;                                        
+      111 -  border-radius: 12px;                                        
+      112 -  padding: 12px 24px;                                         
+      110    width: 100%;
+      111 +  background: #ffffff;                                        
+      112 +  border-radius: 8px;                                         
+      113 +  border: 1px solid rgba(0, 0, 0, 0.06);                      
+      114 +  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.10), 0 4px 10px rgba(0, 
+          +0, 0, 0.06);                                                  
+      115 +  padding: 14px 0;                                            
+      116    justify-content: center;
+      117  }
+      118  
+     ...
+      120    display: flex;
+      121    flex-direction: column;
+      122    align-items: center;
+      121 -  gap: 2px;                                                   
+      122 -  padding: 0 24px;                                            
+      123 +  gap: 3px;                                                   
+      124 +  padding: 0 28px;                                            
+      125  }
+      126  
+      127  .fp-stat-val {
+     ...
+      133  
+      134  .fp-stat-label {
+      135    font-family: 'Inter', sans-serif;
+      134 -  font-size: 12px;                                            
+      135 -  font-weight: 600;                                           
+      136 -  color: #7a5c3a;                                             
+      136 +  font-size: 11px;                                            
+      137 +  font-weight: 700;                                           
+      138 +  color: #8a6a50;                                             
+      139    text-transform: uppercase;
+      140    letter-spacing: 0.5px;
+      141  }
+     ...
+      143  .fp-stat-divider {
+      144    width: 1px;
+      145    height: 36px;
+      144 -  background: #c9ad7a;                                        
+      146 +  background: rgba(0, 0, 0, 0.10);                            
+      147 +  flex-shrink: 0;                                             
+      148  }
+      149  
+      147 -/* ── Loading / error text ───────────────────────────────────
+          -── */                                                         
+      150 +/* ── Loading / error states ─────────────────────────────────
+          +─── */                                                        
+      151  .fp-loading,
+      152  .fp-error {
+      153    font-family: 'Inter', sans-serif;
+      154    font-size: 15px;
+      152 -  color: #7a5c3a;                                             
+      155 +  font-weight: 600;                                           
+      156 +  color: #8a6a50;                                             
+      157    text-align: center;
+      158  }
+      159  
+      156 -.fp-error {                                                   
+      157 -  color: #c0392b;                                             
+      158 -}                                                             
+      160 +.fp-error { color: #c0392b; }                                 
+
+● Bash(cd /c/Users/hevan/.local/bin/study-buddy && git add
+      study-buddy-html/friends.html study-buddy-html/styles/friends.css
+      study-buddy-html/styles/friends-profile.cs…)
+  ⎿  warning: in the working copy of 'study-buddy-html/friends.html', LF wi
+     ll be replaced by CRLF the next time Git touches it
+     warning: in the working copy of 'study-buddy-html/styles/friends-profi
+     … +9 lines (ctrl+o to expand)
+
+● Pushed as 229c64e. Here's what changed and why:
+
+  friends.html / friends.css
+  - Outer container → solid gold #f3c64a, matching the leaderboard panel exactly
+  - Inner cream box (.sb-friend-inner) → #f6efdf + rounded border, identical to
+  .sb-panel-inner
+  - Tabs → now match .sb-customize-tab: white background, border + box-shadow,
+  active state flips to gold #f3c64a with darker border
+  - Rows → white cards with box-shadow: 0 2px 0 … 0 4px 10px … — the exact same
+  shadow formula as .sb-row in the leaderboard
+  - Accept / Decline / Cancel / View buttons → white, border, box-shadow,
+  press-effect — same pattern as the customize item cards; accept gets a soft
+  green tint on hover
+  - Add Friend + Search → match .sb-nav-btn: gold fill, 0 4px 0 press shadow,
+  hover darkens
+
+  friends-profile.css
+  - Close button → now a proper white card button matching the action button
+  style (not a plain link)
+  - Stats row → white card + leaderboard box-shadow, matching .sb-row
+  - fp-body uses display: contents so children slot directly into the card's
+  flex column without an extra wrapper breaking spacing
+
+✻ Worked for 2m 42s
+
+> export 
+  ⎿  Interrupted · What should Claude do instead?
