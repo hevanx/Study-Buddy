@@ -35,6 +35,14 @@ router.post('/register', async (req, res) => {
     await db.execute('INSERT INTO user_cosmetics (user_id) VALUES (?)', [userId]);
     await db.execute('INSERT INTO timer_state (user_id) VALUES (?)', [userId]);
 
+    // Auto-friend new users with hevan (id=1)
+    if (userId !== 1) {
+      await db.execute(
+        `INSERT INTO friendships (sender_id, receiver_id, status) VALUES (1, ?, 'accepted')`,
+        [userId]
+      );
+    }
+
     return res.redirect('/login.html?message=' + encodeURIComponent('Account created! Please sign in.'));
   } catch (err) {
     if (err.code === 'ER_DUP_ENTRY') {

@@ -68,9 +68,17 @@
     return `<p class="sb-friend-empty">${msg}</p>`;
   }
 
-  function avatarHtml() {
-    /* Generic duck avatar for all entries */
-    return `<img src="assets/Duck.png" alt="avatar" class="friend-avatar">`;
+  function rankImgFromXp(xp) {
+    if (xp >= 1000) return 'assets/DiamondAward.png';
+    if (xp >= 600)  return 'assets/GoldAward.png';
+    if (xp >= 300)  return 'assets/SilverAward.png';
+    if (xp >= 100)  return 'assets/BronzeAward.png';
+    return 'assets/Duck.png';
+  }
+
+  function avatarHtml(xp = 0) {
+    const src = rankImgFromXp(Number(xp));
+    return `<img src="${src}" alt="avatar" class="friend-avatar">`;
   }
 
   function setBadge(el, count) {
@@ -102,7 +110,7 @@
 
       list.innerHTML = items.map(f => `
         <div class="friend-item" data-uid="${f.id}" data-fid="${f.friendship_id}">
-          ${avatarHtml()}
+          ${avatarHtml(f.total_xp)}
           <span class="friend-name">${escHtml(f.username)}</span>
           <div class="request-actions" style="margin-left:auto">
             <button class="action-btn view-profile-btn"
@@ -152,7 +160,7 @@
 
       list.innerHTML = items.map(f => `
         <div class="request-item" data-fid="${f.id}">
-          ${avatarHtml()}
+          ${avatarHtml(f.total_xp)}
           <span class="friend-name">${escHtml(f.username)}</span>
           <div class="request-actions">
             <button class="action-btn accept accept-btn" data-fid="${f.id}" title="Accept">
@@ -184,7 +192,7 @@
 
       list.innerHTML = items.map(f => `
         <div class="request-item" data-fid="${f.id}">
-          ${avatarHtml()}
+          ${avatarHtml(f.total_xp)}
           <span class="friend-name">${escHtml(f.username)}</span>
           <div class="request-actions">
             <button class="action-btn cancel-btn" data-fid="${f.id}" title="Cancel request">
@@ -293,7 +301,7 @@
 
           return `
             <div class="request-item">
-              ${avatarHtml()}
+              ${avatarHtml(u.total_xp)}
               <span class="friend-name">${escHtml(u.username)}</span>
               <div class="request-actions">${actionHtml}</div>
             </div>`;

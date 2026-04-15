@@ -109,24 +109,62 @@
   background: #d9b03e;
 }
 
-/* Mobile nav stacking */
+/* Hamburger button — hidden on desktop */
+.sb-hamburger {
+  display: none;
+  background: #f3c64a;
+  border: 2px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  font-size: 22px;
+  line-height: 1;
+  padding: 6px 12px;
+  cursor: pointer;
+  color: #5a3a26;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
+}
+
+.sb-hamburger:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile nav */
 @media (max-width: 640px) {
   .sb-topnav {
-    justify-content: center;
+    justify-content: space-between;
+    position: relative;
   }
 
   .sb-logo {
-    flex: 1 1 100%;
-    text-align: center;
+    flex: 1;
   }
 
-  .sb-rank-wrap {
-    order: 2;
+  .sb-hamburger {
+    display: block;
   }
 
   .sb-nav-links {
-    flex: 1 1 100%;
-    justify-content: center;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #F6EFDF;
+    border: 2px solid #000;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    z-index: 100;
+    min-width: 180px;
+  }
+
+  .sb-nav-links.sb-nav-open {
+    display: flex;
+  }
+
+  .sb-nav-btn {
+    text-align: center;
   }
 }
 

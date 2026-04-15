@@ -1,4 +1,16 @@
 /* ===============================
+   HAMBURGER MENU
+================================ */
+const hamburger = document.querySelector('.sb-hamburger');
+const navLinks  = document.querySelector('.sb-nav-links');
+if (hamburger && navLinks) {
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('sb-nav-open');
+    hamburger.setAttribute('aria-expanded', open);
+  });
+}
+
+/* ===============================
    EXISTING TAB LOGIC
 ================================ */
 const tabButtons = document.querySelectorAll('.tab');

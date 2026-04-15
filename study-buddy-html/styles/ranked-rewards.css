@@ -1,15 +1,13 @@
 .sb-main {
-  height: calc(100svh - 86px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: clamp(10px, 2vh, 20px) 16px;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .rewards-container {
-  width: 1150px;
-  height: 650px;
+  width: min(1150px, 100%);
   margin: auto;
   border: 1px black solid;
   border-radius: 10px;
@@ -29,7 +27,7 @@
 
 .title h1 {
   margin: 0;
-  font-size: 40px;
+  font-size: clamp(22px, 4vw, 40px);
   font-weight: 400;
   font-family: 'Inter', sans-serif;
   color: #3b2a20;
@@ -129,4 +127,26 @@
   font-size: 12px;
   font-weight: 600;
   color: #3b2a20;
+}
+
+@media (max-width: 640px) {
+  .rewards-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .rewards-col {
+    border-right: none;
+    border-bottom: 1px solid black;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .rewards-col:last-child {
+    border-bottom: none;
+  }
+
+  .tab {
+    font-size: 16px;
+  }
 }

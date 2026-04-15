@@ -180,8 +180,7 @@
 .friend-avatar {
   width: clamp(32px, 3.5vw, 40px);
   height: clamp(32px, 3.5vw, 40px);
-  border-radius: 50%;
-  object-fit: cover;
+  object-fit: contain;
   flex-shrink: 0;
 }
 

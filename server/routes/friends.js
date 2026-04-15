@@ -24,6 +24,7 @@ router.get('/search', async (req, res) => {
       `SELECT
          u.id,
          u.username,
+         COALESCE(p.total_xp, 0) AS total_xp,
          CASE
            WHEN u.id = ?                                         THEN 'self'
            WHEN fa.status = 'accepted' OR fb.status = 'accepted' THEN 'friends'
@@ -35,6 +36,7 @@ router.get('/search', async (req, res) => {
        FROM users u
        LEFT JOIN friendships fa ON fa.sender_id   = ? AND fa.receiver_id = u.id
        LEFT JOIN friendships fb ON fb.sender_id   = u.id AND fb.receiver_id = ?
+       LEFT JOIN user_progress p ON p.user_id = u.id
        WHERE u.username LIKE ?
        LIMIT 20`,
       [self, self, self, `%${q}%`]
@@ -78,9 +80,11 @@ router.get('/incoming', async (req, res) => {
   const self = myId(req);
   try {
     const [rows] = await db.execute(
-      `SELECT f.id, u.id AS user_id, u.username, f.created_at
+      `SELECT f.id, u.id AS user_id, u.username, f.created_at,
+              COALESCE(p.total_xp, 0) AS total_xp
        FROM friendships f
        JOIN users u ON u.id = f.sender_id
+       LEFT JOIN user_progress p ON p.user_id = u.id
        WHERE f.receiver_id = ? AND f.status = 'pending'
        ORDER BY f.created_at DESC`,
       [self]
@@ -98,9 +102,11 @@ router.get('/outgoing', async (req, res) => {
   const self = myId(req);
   try {
     const [rows] = await db.execute(
-      `SELECT f.id, u.id AS user_id, u.username, f.created_at
+      `SELECT f.id, u.id AS user_id, u.username, f.created_at,
+              COALESCE(p.total_xp, 0) AS total_xp
        FROM friendships f
        JOIN users u ON u.id = f.receiver_id
+       LEFT JOIN user_progress p ON p.user_id = u.id
        WHERE f.sender_id = ? AND f.status = 'pending'
        ORDER BY f.created_at DESC`,
       [self]
