@@ -139,6 +139,9 @@
       window._sbXp = new XpSystem(new ApiProgressRepository('/api'));
       await window._sbXp.init(String(me.id));
       window._sbTimer = new StudyTimer(window._sbXp);
+      // Re-render cosmetics grid now that XP is loaded — fixes race condition
+      // where renderGrid() ran before init() finished and showed items as locked
+      if (typeof renderGrid === 'function') renderGrid();
     })();
   </script>
   <script src="scripts/main.js"></script>
