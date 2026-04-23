@@ -1,0 +1,17 @@
+> i need you to check my grammar on this and make it sound more professional. 'Study Buddy is a web app where users can track their study time, gain XP, rank up from Unranked to Diamond, unlock cosmetics, and add friends. This milestone was mostly about finishing deployment and making sure everything actually runs consistently on a local setup without breaking.
+
+The back end is built using Node.js and Express, with routes split up for things like authentication, study progress, the XP/timer system, friends, and cosmetics. It uses a MariaDB database that sets itself up automatically the first time you run it, including the tables and some sample data. There are also five pre-made user accounts across different ranks so you don't have to set anything up just to test the app.
+
+Everything runs through Docker using Docker Compose, including the Node.js API, the MariaDB database, Nginx for the frontend, and phpMyAdmin. You just run docker-compose up and it builds and starts everything. The frontend runs on port 8081, the API is on port 3000, and phpMyAdmin is on port 8082. The database saves data between runs, but you can reset everything with docker-compose down -v if needed.
+
+We fixed all the bugs we found during testing before submitting. The app was tested to make sure users can register and log in, track study sessions, gain XP, rank up properly, and load things like friends and the leaderboard without issues.'
+
+● Here's a polished version:
+
+Study Buddy is a web-based study tracking application that allows users to log study time, earn XP, advance through ranks (Unranked through Diamond), collect cosmetic rewards, and connect with friends. This milestone focused on finalizing deployment and ensuring the application runs reliably from a self-contained local environment.
+
+The back-end is built with Node.js and Express, organized into dedicated route modules for authentication, study progress, the XP/timer system, friends, and cosmetics. Data is persisted in a MariaDB database that is automatically initialized with schema and sample data on first launch. Five pre-seeded user accounts spanning all rank tiers are included so the application can be explored immediately without manual setup.
+
+The entire stack, Node.js API, MariaDB database, Nginx static file server, and phpMyAdmin, is containerized and orchestrated with Docker Compose. Running a single docker-compose up command from the project directory builds and starts all services with no additional configuration required. The front end is served by Nginx on port 8081, the API runs on port 3000, and phpMyAdmin is available on port 8082 for database inspection. The database volume is persistent across restarts and can be fully reset via docker-compose down -v.
+
+All known bugs identified during testing were resolved prior to this submission. The application was verified to register and log in users, track and persist study sessions, update XP and rank correctly, and load friend and leaderboard data as expected.
